@@ -197,13 +197,13 @@ public class GameLogicController implements Runnable{
 	
 	// 찬반 투표를 시작하는 함수
 	private void civilProsConsPrepare() {
-		connector.controllVoteFunctionAll(true);
+		connector.controllVoteFunctionAll(true, users[targetUser].userName);
 	}
 	
 	
 	// 찬반 투표를 종료하는 함수
 	private void civilProsConsClose() {
-		connector.controllUserSelectFunctionAll(false);
+		connector.controllVoteFunctionAll(false, "END");
 		connector.controllChatFunctionAll(false);
 	}
 	
@@ -249,10 +249,12 @@ public class GameLogicController implements Runnable{
 		if(id == mafia) {
 			gameExitStatus = CIVIL_WIN;
 			exitCondition = true;
+			connector.broadcastGameEnd(0);
 		}
 		if(checkAlivePlayer() < 2) {
 			gameExitStatus = MAFIA_WIN;
 			exitCondition = true;
+			connector.broadcastGameEnd(1);
 		}
 	}
 	
@@ -270,6 +272,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	private void doMafiaJob() throws InterruptedException{
+		connector.broadcastGameStage(2, getUserList(1));
 		connector.controllUserSelectFunction(users[mafia].userName, true);
 		currentAction = new MafiaSelectBehaviour();
 		enableInturrupt();
@@ -279,6 +282,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	private void doDoctorJob() throws InterruptedException{
+		connector.broadcastGameStage(3, getUserList(1));
 		connector.controllUserSelectFunction(users[doctor].userName, true);
 		currentAction = new DoctorSelectBehaviour();
 		enableInturrupt();
@@ -288,6 +292,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	private void doPoliceJob() throws InterruptedException{
+		connector.broadcastGameStage(4, getUserList(1));
 		connector.controllUserSelectFunction(users[police].userName, true);
 		currentAction = new PoliceSelectBehaviour();
 		enableInturrupt();

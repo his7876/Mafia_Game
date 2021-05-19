@@ -38,12 +38,20 @@ import kr.ac.konkuk.ccslab.cm.manager.CMConfigurator;
 import kr.ac.konkuk.ccslab.cm.manager.CMFileTransferManager;
 import kr.ac.konkuk.ccslab.cm.manager.CMMqttManager;
 import kr.ac.konkuk.ccslab.cm.stub.CMClientStub;
+import kr.ac.konkuk.ccslab.cm.stub.CMServerStub;
 import kr.ac.konkuk.ccslab.cm.util.CMUtil;
 
 public class ServerEventHandler  implements CMAppEventHandler {
 
 	
 	private DummyEventHandler dummyManager;
+	private CMServerStub stub;
+	
+	public ServerEventHandler(CMServerStub stub ) {
+		this.stub = stub;
+		CMGameGateway.getInstance().registerCM(stub);
+	}
+	
 	
 	@Override
 	public void processEvent(CMEvent cme) {

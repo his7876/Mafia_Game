@@ -62,71 +62,151 @@ public class GameCMConnector {
 		}
 		return false;
 	}
-	
 
-	public void broadcastGameEnd(String user) {
-		
+	public void broadcastGameEnd(int status) {
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = "null";
+		event.opcode = 11 + status;
+		event.roomID = -1;
+		event.userName = "Server";
+		sendToAll(event);
 	}
 	
 	public void broadcastGameStart(String userList) {
-		
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = userList;
+		event.opcode = 0;
+		event.roomID = -1;
+		event.userName = "Server";
+		sendToAll(event);
 	}
 	
 	public void broadcastGameStage(int stage, String userList) {
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = userList;
+		event.opcode = 22 + stage;
+		event.roomID = -1;
+		event.userName = "Server";
+		sendToAll(event);
 	}
 	
 	public void broadcastChatData(String data) {
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = data;
+		event.opcode = 3;
+		event.roomID = -1;
+		event.userName = "Server";
+		sendToAll(event);
 	}
 	
 	public void broadcastUserDie(String user, String how) {
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = user;
+		event.opcode = 8;
+		event.roomID = -1;
+		event.userName = "Server";
+		sendToAll(event);
 	}
 	
-	public void broadcastNightStart() {
-		
-	}
-	
-	public void broadcastNightEnd() {
-		
-	}
 	
 	public void castJobInfo(String user, int job) {
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = job + "";
+		event.opcode = 1;
+		event.roomID = -1;
+		event.userName = "Server";
+		sendEvent(event, user);
 	}
 	
 	
 	public void castGameEnter(String who) {
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = who;
+		event.opcode = 18;
+		event.roomID = -1;
+		event.userName = "Server";
+		sendEvent(event, who);
 	}
 	
 	public void controllChatFunction(String user, boolean enable) {
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = user;
+		if(enable) {
+			event.opcode = 4;
+		}else {
+			event.opcode = 5;
+		}
+		event.roomID = -1;
+		event.userName = "Server";
+		sendEvent(event, user);
 	}
 	
 	public void controllChatFunctionAll(boolean enable) {
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = "null";
+		if(enable) {
+			event.opcode = 4;
+		}else {
+			event.opcode = 5;
+		}
+		event.roomID = -1;
+		event.userName = "Server";
+		sendToAll(event);
 	}
 	
 	public void controllUserSelectFunction(String user, boolean enable) {
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = user;
+		if(enable) {
+			event.opcode = 9;
+		}else {
+			event.opcode = 10;
+		}
+		event.roomID = -1;
+		event.userName = "Server";
+		sendEvent(event, user);
 	}
 	
 	public void controllUserSelectFunctionAll(boolean enable) {
-		
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = "null";
+		if(enable) {
+			event.opcode = 9;
+		}else {
+			event.opcode = 10;
+		}
+		event.roomID = -1;
+		event.userName = "Server";
+		sendToAll(event);
 	}
 	
-	public void controllVoteFunctionAll(boolean enable) {
-		
+	public void controllVoteFunctionAll(boolean enable, String who) {
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = who;
+		if(enable) {
+			event.opcode = 14;
+		}else {
+			event.opcode = 15;
+		}
+		event.roomID = -1;
+		event.userName = "Server";
+		sendToAll(event);
 	}
 	
 	public void markUser(int id, boolean enable) {
 		markers[id] = enable;
 	}
 
-
+	
+	private void sendToAll(UserGameEventInfo event) {
+		for(int i = 0 ; i < currentUsers.size(); i ++) {
+			sendEvent(event, currentUsers.get(i));
+		}
+	}
+	
+	private void sendEvent(UserGameEventInfo event, String to) {
+		CMGameGateway.getInstance().sendGameEvent(event, to);
+	}
 
 	
 }

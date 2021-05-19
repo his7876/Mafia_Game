@@ -43,7 +43,6 @@ public class GameSession{
 	private GameSessionCallback callback;
 	private GameCMConnector connector;
 	private int roomID;
-	private boolean exitFlag;
 	private Thread thread;
 	private GameLogicController gameLogic;
 	
@@ -52,7 +51,6 @@ public class GameSession{
 		connector = new GameCMConnector();
 
 	}
-
 	
 	public boolean tryAddUser(String user) {
 		if(canAddUser()) {
@@ -63,6 +61,7 @@ public class GameSession{
 					public void requestCollectGameThread(int roomid, int status) {
 						// TODO Auto-generated method stub
 						callback.requestCollectGameThread(roomid, status);
+						connector.currentUsers = new ArrayList<String>();
 					}
 				}, roomID);
 				thread = new Thread(gameLogic);
