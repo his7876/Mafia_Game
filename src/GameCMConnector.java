@@ -42,7 +42,12 @@ import kr.ac.konkuk.ccslab.cm.util.CMUtil;
 public class GameCMConnector {
 	public List<String> currentUsers;
 	private boolean[] markers; // 이 마커가 표시된 유저에게는 Controll All함수가 전달되지 않는다.
-	
+	public static final String[] OPCODE_INFO = {"Game Start", "Send Job", "Select User", "Process Chat", "Enable Chat"
+			,"Disable Chat", "Enable Pros Cons", "Disable Pros Cons", "Cast Player Death", "Request Select User"
+			, "Request Stop User Select", "Civil Win", "Mafia Win", "Cannot Play Game", "Request Pros Cons"
+			, "Request Stop Pros Cons", "Request Exit Room", "Request Enter Room", "Cast Success Enter Room", "NULL"
+			, "Cast Users In The Room", "Cast Most Voted Player", "Cast Morning", "Cast Night"
+			, "Cast Mafia Turn", "Cast Police Turn", "Cast Doctor Turn"};
 	
 	public GameCMConnector() {
 		currentUsers = new ArrayList<String>();
@@ -205,6 +210,7 @@ public class GameCMConnector {
 	}
 	
 	private void sendEvent(UserGameEventInfo event, String to) {
+		ServerLogger.printLog("[서버 -> 클라이언트] 이벤트명 : " + OPCODE_INFO[event.opcode] + ", 전송 대상 : " + to + ", 인자 : " + event.args + ", 현재 방 : " + event.roomID);
 		CMGameGateway.getInstance().sendGameEvent(event, to);
 	}
 

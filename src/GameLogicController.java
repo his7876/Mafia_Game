@@ -116,9 +116,12 @@ public class GameLogicController implements Runnable{
 		randomizer.addNumber(3);
 		jobs = randomizer.getNums();
 		
+		ServerLogger.printLog("[방 :" + roomid + "] 각 유저들에게 직업을 배정 시작" );
 		// 무작위로 할당받은 직업을 배정
 		for(int i = 0; i < users.length; i ++) {
+			
 			users[i].job = jobs[i];
+			ServerLogger.printLog("[방 :" + roomid + "] 유저 > " + users[i].userName +" < 에게 직업 : " + jobs[i] + "를 배정함" );
 			connector.castJobInfo(users[i].userName, users[i].job); // 각 유저에게 해당 유저의 직업을 방송
 			switch(i) {
 			case 1 :
@@ -133,6 +136,7 @@ public class GameLogicController implements Runnable{
 			default:
 			}
 		}
+		ServerLogger.printLog("[방 :" + roomid + "] 각 유저들에게 직업을 배정 완료" );
 		
 	}
 	
@@ -245,13 +249,16 @@ public class GameLogicController implements Runnable{
 			connector.markUser(id, false);
 			connector.controllChatFunction(users[id].userName, false);
 			connector.broadcastUserDie(users[id].userName, null);
+			ServerLogger.printLog("[방 :" + roomid + "] 플레이어 : " + users[id].userName + "  사망함");
 		}
 		if(id == mafia) {
+			ServerLogger.printLog("[방 :" + roomid + "] 마피아를 잡아냄, 시민 승리" );
 			gameExitStatus = CIVIL_WIN;
 			exitCondition = true;
 			connector.broadcastGameEnd(0);
 		}
 		if(checkAlivePlayer() < 2) {
+			ServerLogger.printLog("[방 :" + roomid + "] 시민의 수가 마피아와 같아짐, 마피아 승리" );
 			gameExitStatus = MAFIA_WIN;
 			exitCondition = true;
 			connector.broadcastGameEnd(1);
@@ -272,6 +279,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	private void doMafiaJob() throws InterruptedException{
+		ServerLogger.printLog("[방 :" + roomid + "] 마피아 액션 시작" );
 		connector.broadcastGameStage(2, getUserList(1));
 		connector.controllUserSelectFunction(users[mafia].userName, true);
 		currentAction = new MafiaSelectBehaviour();
@@ -282,6 +290,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	private void doDoctorJob() throws InterruptedException{
+		ServerLogger.printLog("[방 :" + roomid + "] 의사 액션 시작" );
 		connector.broadcastGameStage(3, getUserList(1));
 		connector.controllUserSelectFunction(users[doctor].userName, true);
 		currentAction = new DoctorSelectBehaviour();
@@ -292,6 +301,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	private void doPoliceJob() throws InterruptedException{
+		ServerLogger.printLog("[방 :" + roomid + "] 경찰 액션 시작" );
 		connector.broadcastGameStage(4, getUserList(1));
 		connector.controllUserSelectFunction(users[police].userName, true);
 		currentAction = new PoliceSelectBehaviour();
@@ -319,6 +329,7 @@ public class GameLogicController implements Runnable{
 			}
 			if(!users[subject].isVoted) {
 				users[subject].isVoted = true;
+				ServerLogger.printLog("[방 :" + roomid + "] 플레이어 : "+ user + "가 결과에 " + pros );
 				if(pros) {
 					voteCount ++;
 				}
@@ -328,6 +339,7 @@ public class GameLogicController implements Runnable{
 	
 	public synchronized void processUserSelected(String who, String target) {
 		if(!disabledInturrupt) {
+			ServerLogger.printLog("[방 :" + roomid + "] 플레이어 : " + who + " (이)가 플레이어 : " + target + " 를 선택함");
 			currentAction.whenUserSelected(tryFindUser(target), tryFindUser(who), users, connector);
 		}
 	}
@@ -339,18 +351,23 @@ public class GameLogicController implements Runnable{
 		assignJob();
 		try {
 			while (!exitCondition) {
+				ServerLogger.printLog("[방 :" + roomid + "] 시민 투표 시작함" );
 				civilVoteProcess();
 				if(exitCondition) {continue;}
 				
+				ServerLogger.printLog("[방 :" + roomid + "] 결정된 유저에 대한 찬반 투표를 시작함" );
 				civilProsConsProcess();
 				if(exitCondition) {continue;}
 				
+				ServerLogger.printLog("[방 :" + roomid + "] 밤이 됨, 각 직업들의 기능을 시작" );
 				nightAction();
+				ServerLogger.printLog("[방 :" + roomid + "] 낮이 됨" );
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		ServerLogger.printLog("[방 :" + roomid + "] 게임 종료, 자원 회수 요청" );
 		collectResource.requestCollectGameThread(-1, gameExitStatus);
 		
 	}

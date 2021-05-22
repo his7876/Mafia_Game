@@ -46,16 +46,17 @@ public class GameSession{
 	private Thread thread;
 	private GameLogicController gameLogic;
 	
-	public GameSession(GameSessionCallback callback) {
+	public GameSession(GameSessionCallback callback, int id) {
 		this.callback = callback;
 		connector = new GameCMConnector();
-
+		roomID = id;
 	}
 	
 	public boolean tryAddUser(String user) {
 		if(canAddUser()) {
 			connector.tryAddUser(user);
-			if(canAddUser()) {
+			ServerLogger.printLog("[방 :" + roomID + "] 유저 참여함 : " + ", 현재 인원수 : " + connector.currentUsers.size());
+			if(connector.currentUsers.size() == 5) {
 				gameLogic = new GameLogicController(connector,new GameSessionCallback() {					
 					@Override
 					public void requestCollectGameThread(int roomid, int status) {
@@ -66,6 +67,7 @@ public class GameSession{
 				}, roomID);
 				thread = new Thread(gameLogic);
 				thread.start();
+				ServerLogger.printLog("[방 :" + roomID + "] : 게임 시작 조건 달성, 게임 시작" );
 			}
 		}
 		return false;

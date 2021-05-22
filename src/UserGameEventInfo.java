@@ -47,7 +47,7 @@ public class UserGameEventInfo {
 	CMEvent cme;
 	
 	public String toString() {
-		return roomID + "|" + userName + "|" + opcode + "|" + args;
+		return opcode + "|" + roomID + "|" + userName + "|" + args;
 	}
 	
 	public void fromString(String info) {
@@ -55,9 +55,9 @@ public class UserGameEventInfo {
 		if(temp.length < 4) {
 			return;
 		}
-		roomID = Integer.parseInt(temp[0]);
-		userName = temp[1];
-		opcode = Integer.parseInt(temp[2]);
+		opcode = Integer.parseInt(temp[0]);
+		roomID = Integer.parseInt(temp[1]);
+		userName = temp[2];
 		args = temp[3];
 	}
 }

@@ -20,7 +20,7 @@ public class GameSessionHandler {
 						userRoomTable.remove(users.get(i));
 					}
 				}
-			});
+			}, i);
 		}
 	}
 	
@@ -30,8 +30,11 @@ public class GameSessionHandler {
 			room = userRoomTable.get(msg.cme.getSender());
 		}
 		
+		ServerLogger.printLog("[클라이언트 -> 서버] 보낸 클라이언트 : " + msg.userName + ", 보낸 이벤트 : " + GameCMConnector.OPCODE_INFO[msg.opcode] + ", 발생한 방 : " + room );
+		
 		switch(msg.opcode) {
 		case 2:
+			
 			if(room != -1) {
 				rooms[room].selectUser(msg.cme.getSender(), msg.args);
 				return true;
@@ -58,11 +61,20 @@ public class GameSessionHandler {
 		case 16:			
 		case 17:
 			if(room == -1) {
+				int taroom = -1;
 				for(int i = 0; i < 10; i ++) {
 					if(rooms[i].canAddUser()) {
-						userRoomTable.put(msg.cme.getSender(), i);
-						return rooms[i].tryAddUser(msg.cme.getSender());
+						if(rooms[i].getUsers().size() > taroom) {
+							taroom = i;
+						}
 					}
+				}
+				if(taroom == -1) {
+					return false;
+				}
+				if(rooms[taroom].canAddUser()) {
+					userRoomTable.put(msg.cme.getSender(), taroom);
+					return rooms[taroom].tryAddUser(msg.cme.getSender());
 				}
 			}
 			return false;
