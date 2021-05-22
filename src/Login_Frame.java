@@ -1,10 +1,13 @@
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class Login_Frame extends JFrame{
     private MainProcess main;
+	private Dimension frameSize, screenSize;
 
     private JLabel userLabel;
     private JLabel passLabel;
@@ -21,7 +24,7 @@ public class Login_Frame extends JFrame{
     private void Init(){
         setTitle("Login Page");
         setSize(280,150);
-        setLocation(800,450);
+        screenSizeLocation();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -90,10 +93,16 @@ public class Login_Frame extends JFrame{
                 main.showMainFrame((String)Id_Textbox.getText());
             }
         }else{
-            JOptionPane.showMessageDialog(this, "Login Faild", "°æ°í", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Login Faild", "Fail", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    public void screenSizeLocation() {
+    	frameSize = getSize();
+    	screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    	setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2);
+    }
+    
     public void setMain(MainProcess main) {
         this.main = main;
     }

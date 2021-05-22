@@ -11,12 +11,9 @@ public class Main_Frame extends JFrame{
 
     private MainProcess main;
 	private Dimension frameSize, screenSize;
-	private roomDialog dialog;
-    
+	
 	private JLabel label;
-    private JList Rooms_List;
     private JList Friends_List;
-    private DefaultListModel room_model;
     private DefaultListModel friend_model;
     private JScrollPane scrollpane1;
     private JScrollPane scrollpane2;
@@ -32,7 +29,7 @@ public class Main_Frame extends JFrame{
     }
     
     private void Init() {
-        setTitle("¸¶ÇÇ¾Æ °ÔÀÓ");
+        setTitle("ë§ˆí”¼ì•„ ê²Œìž„");
         setSize(252,405);
         screenSizeLocation();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -47,41 +44,18 @@ public class Main_Frame extends JFrame{
     
     private void setDisplay(JPanel pnl) {
     	pnl.setLayout(null);
-    	//»ç¿ëÀÚ id
     	User_Info_Text = new JLabel(Username);
     	
-    	Room_Create_Button = new JButton("¹æ ÀÔÀå");
-    	dialog = new roomDialog(this, "¹æ »ý¼º", true);
+    	Room_Create_Button = new JButton("ë°© ìž…ìž¥");
     	Room_Create_Button.addActionListener(new ActionListener() {
     		
     		@Override
     		public void actionPerformed(ActionEvent arg0) {
-    			//dialog.setVisible(true);
+    			main.showRoomFrame();
     		}
     	});
     
 
-    	Rooms_List = new JList(new DefaultListModel());
-    	Rooms_List.addMouseListener(new MouseAdapter() {
-    		
-    		@Override
-    		public void mouseClicked(MouseEvent arg0) {
-    			if(arg0.getClickCount()==2) {
-    				//¹æ µé¾î°¡±â
-    				
-    			}
-    		}
-    		
-    	});
-    	
-//    	room_model = (DefaultListModel)Rooms_List.getModel();
-//    	room_model.addElement("¹æ 1");
-//    	room_model.addElement("¹æ 2");
-//    	room_model.addElement("¹æ 3");
-//    	room_model.addElement("¹æ 4");
-//    	scrollpane1 = new JScrollPane(Rooms_List);
-//    	scrollpane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    	
     	Friends_List = new JList(new DefaultListModel());
     	friend_model = (DefaultListModel)Friends_List.getModel();
     	friend_model.addElement("User 1");
@@ -93,12 +67,10 @@ public class Main_Frame extends JFrame{
     	
     	User_Info_Text.setBounds(4,8,131,25);
     	Room_Create_Button.setBounds(156,5,80,25);
-    	//scrollpane1.setBounds(4, 34, 340, 337);
     	scrollpane2.setBounds(4, 36, 239, 337);
     	
     	pnl.add(User_Info_Text);
     	pnl.add(Room_Create_Button);
-    	//pnl.add(scrollpane1);
     	pnl.add(scrollpane2);
     	
     }
@@ -117,38 +89,3 @@ public class Main_Frame extends JFrame{
     
 }
 
-
-class roomDialog extends JDialog {
-	JLabel lb = new JLabel("¹æ Á¦¸ñ");
-	JTextField tf = new JTextField(20);
-	JButton okbtn = new JButton("Ok");
-	
-	public roomDialog(JFrame frame, String title, boolean modal) {
-		super(frame, title, modal);
-		setLayout(null);
-		setSize(250,90);
-		setLocationRelativeTo(frame);
-		setResizable(false);
-		
-		lb.setBounds(10, 4, 60, 25);
-		tf.setBounds(60,4,170,25);
-		okbtn.setBounds(95, 32, 60, 25);
-		
-		add(lb);
-		add(tf);
-		add(okbtn);
-		
-		tf.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
-		okbtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//¹æ»ý¼º
-				setVisible(false);
-			}
-		});
-	}
-}
