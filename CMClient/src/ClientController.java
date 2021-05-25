@@ -13,7 +13,9 @@ public class ClientController {
 	private ClientControllerEventHandler clientEventHandler;
 	
 	private boolean m_bRun;
-	
+	// GameController gc;
+	// RoomController rc;
+	// UserController uc;
 			
 	public ClientController() {
 		
@@ -168,7 +170,6 @@ public class ClientController {
    *   Parameters : void
    *   Return values : void
    * */
-	
 	public void getSessionMember() {
 		System.out.print("====== print group members\n");
 		CMMember groupMembers = clientStub.getGroupMembers();
@@ -183,21 +184,25 @@ public class ClientController {
 
 	
 	
+	
 	 /* Methods */
 
   /*  Functionality :
       DummyEvent 전송 함수
-      형식 "type#메시지"
+      
+      InfoType :  "opcode|roomID|userName|args" 
+      
+      
       
   *   Parameters : void
   *   Return values : void
   * */
 	
-	public void sendDummyEvent(String type, String msg) {
+	public void sendDummyEvent(String opcode, String msg) {
 		System.out.println("====== DummyEvent send to default server");
 		CMDummyEvent due = new CMDummyEvent();
 		due.setSender(clientStub.getCMInfo().getInteractionInfo().getMyself().getName());
-		due.setDummyInfo(type+"#"+msg);
+		due.setDummyInfo(opcode+"|"+msg);
 		clientStub.send(due, "SERVER");
 		System.out.println(due.getDummyInfo());
 	}
@@ -229,11 +234,9 @@ public class ClientController {
 	
 	
 	
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) {	
 		ClientController client = new ClientController();
 		client.clientStub.setAppEventHandler(client.clientEventHandler);
-	
 	
 				
 	}

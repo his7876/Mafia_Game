@@ -17,21 +17,52 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 	//Dummy info type 
 	public class DummyType{
 		
-		//1. 게임 시작 
-		public static final String GameStart = "GameStart";
-		//2. 직업 관련 
-		public static final String SetRole = "SetRole";
-		//3. 채팅 관련
-		public static final String Chat = "Chat";
-		//4. 게임 결과 관련
-		public static final String Result = "Result";
-		//5. 투표 관련 
-		public static final String Voting = "Voting";
-		//6. 방 관련 
-		public static final String Room = "Room";
-		//7. 게임 진행 관련
-		public static final String GameTurn = "GameTurn";
-		
+		//0. 게임 시작 
+		public static final String opcode0 = "0";
+		//1. 직업 관련 
+		public static final String opcode1 = "1";
+		//2. 유저 선택
+		public static final String opcode2 = "2";
+		//3. 채팅 송수신
+		public static final String opcode3 = "3";
+		//4-5. 채팅 허가 
+		public static final String opcode4 = "4";		 
+		public static final String opcode5 = "5";	
+		//6-7 찬반 선택
+		public static final String opcode6 = "6";
+		public static final String opcode7 = "7";
+		//8. 사망자
+		public static final String opcode8 = "8";
+		//9. 유저 선택 요청
+		public static final String opcode9 = "9";
+		//10. 유저 선택 종료
+		public static final String opcode10 = "10";
+		//11-13. 게임 결과 (시민/마피아/진행불가)
+		public static final String opcode11 = "11";
+		public static final String opcode12 = "12";
+		public static final String opcode13 = "13";
+		//14-15. 찬반 투표 요청
+		public static final String opcode14 = "14";
+		public static final String opcode15 = "15";
+		//16. 방 나가기
+		public static final String opcode16 = "16";
+		//17. 방 들어가기 
+		public static final String opcode17 = "17";
+		//18. 방 들어가기 성공
+		public static final String opcode18 = "18";
+		//19. ? 
+		public static final String opcode19 = "19";
+		//20. 방 유저 정보 
+		public static final String opcode20 = "20";
+		//21. 투표 제일 많이 받은 유저 
+		public static final String opcode21 = "21";
+		//22-26. 게임 턴 전달 
+		public static final String opcode22 = "22";
+		public static final String opcode23 = "23";
+		public static final String opcode24 = "24";
+		public static final String opcode25 = "25";
+		public static final String opcode26 = "26";
+			
 	}
 	
 	
@@ -70,9 +101,13 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 			if (se.isValidUser() == 0) {
 				System.out.println("This client fails authentication by the default server!\n");
 				m_client.terminateCM(); 
-			}else if(se.isValidUser()== -1) {
+			}
+			
+			else if(se.isValidUser()== -1) {
 				System.out.println("This client is already in the login-user list!\n");
-			}else {
+			}
+			
+			else {
 				System.out.println("This client successfully logs in to the default server.\n");
 				
 			}
@@ -119,30 +154,117 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 
 	
 
-	// DummyEvent 처리 
+	// Server로 부터 오는 DummyEvent 처리 
 	private void processDummyEvent(CMEvent cme)
 	{
 		CMDummyEvent due = (CMDummyEvent) cme;
 		String msg = due.getDummyInfo();
 		System.out.println("total message for sender : " +msg);
-		String[] arrMsg = msg.split("#");
-		String type = arrMsg[0];
+		String[] arrMsg = msg.split("|");
+		String opcode = arrMsg[0];
 		
-		switch(type) {
-		case DummyType.GameStart:
+		switch(opcode) {
+		
+		case DummyType.opcode0:
+			
 			break;
-		case DummyType.SetRole:
+			
+		case DummyType.opcode1:
+			
 			break;
-		case DummyType.Chat:
+			
+		case DummyType.opcode2:
+			
 			break;
-		case DummyType.Result:
+			
+		case DummyType.opcode3:
+			
 			break;
-		case DummyType.Voting:
+			
+		case DummyType.opcode4:
+			
 			break;
-		case DummyType.Room:
+			
+		case DummyType.opcode5:
+			
 			break;
-		case DummyType.GameTurn:
-			break;						
+			
+		case DummyType.opcode6:
+			
+			break;	
+			
+		case DummyType.opcode7:
+					
+			break;	
+			
+		case DummyType.opcode8:
+			
+			break;
+			
+		case DummyType.opcode9:
+			
+			break;	
+			
+		case DummyType.opcode10:
+			
+			break;	
+			
+		case DummyType.opcode11:
+			
+			break;	
+			
+		case DummyType.opcode12:
+			
+			break;	
+			
+		case DummyType.opcode13:
+			
+			break;
+			
+		case DummyType.opcode14:
+			
+			break;
+			
+		case DummyType.opcode15:
+			
+			break;
+			
+		case DummyType.opcode16:
+			
+			break;
+			
+		case DummyType.opcode17:
+					
+			break;	
+			
+		case DummyType.opcode18:
+			
+			break;	
+			
+		case DummyType.opcode19:
+			
+			break;	
+			
+		case DummyType.opcode20:
+			
+			break;	
+			
+		case DummyType.opcode21:
+			
+			break;	
+			
+		case DummyType.opcode22:
+			
+			break;	
+			
+		case DummyType.opcode23:
+			
+			break;	
+			
+		case DummyType.opcode24:
+			
+			break;	
+	
 		default:
 			break;
 		}
