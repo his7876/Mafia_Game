@@ -12,6 +12,7 @@ public class ClientController {
 	private CMClientStub clientStub;
 	private ClientControllerEventHandler clientEventHandler;
 	
+	
 	private boolean m_bRun;
 	// GameController gc;
 	// RoomController rc;
@@ -21,7 +22,7 @@ public class ClientController {
 		
 		clientStub = new CMClientStub();
 		clientEventHandler = new ClientControllerEventHandler(clientStub,this);
-	
+		
 		//CM 초기화 및 시작  
 		m_bRun = clientStub.startCM(); 
 		if(!m_bRun) {
@@ -29,8 +30,10 @@ public class ClientController {
 			System.err.println("CM initialization error!");
 			return;
 		}else {
+			
 			System.out.println("CM initialization success!");
 		}
+		
 		
 	}
 	
@@ -42,7 +45,7 @@ public class ClientController {
 		return clientEventHandler;
 	}
 	
-		
+	
 
 	 /* Methods */
 
@@ -66,9 +69,9 @@ public class ClientController {
         로그인 함수
           
     *   Parameters : void
-    *   Return values : void
+    *   Return values : boolean
     * */	
-	public boolean loginCM(String strUserID,  String strPassword) throws IOException {
+	public boolean loginCM(String strUserID,  String strPassword) {
 		
 		//String strUserID = "null";
 		//String strPassword = "null";
@@ -113,12 +116,9 @@ public class ClientController {
    *   Parameters : void
    *   Return values : void
    * */		
-	public void singUpCM(String strUserID,String strPassword, String strRePassword) throws IOException {
+	public void singUpCM(String strUserID,String strPassword, String strRePassword)  {
 
-		//String strUserID = "null";
-		//String strPassword = "null";
-		
-		//Object[] message = {"User Name: ", id, "Password", pw, "RePassWord" , repw};
+	
 		
 		if(strUserID.equals("")) {
 			System.out.println("Please enter your ID");
@@ -235,9 +235,13 @@ public class ClientController {
 	
 	
 	public static void main(String[] args) {	
+		
 		ClientController client = new ClientController();
 		client.clientStub.setAppEventHandler(client.clientEventHandler);
-	
+
+		Login_Frame login_frame = new Login_Frame(client);
+
+		
 				
 	}
 	
