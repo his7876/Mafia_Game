@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
 
+
 public class Main_Frame extends JFrame{
 
     private MainProcess main;
@@ -51,7 +52,7 @@ public class Main_Frame extends JFrame{
     		
     		@Override
     		public void actionPerformed(ActionEvent arg0) {
-    			main.showRoomFrame();
+    			main.showRoomFrame(Username);
     		}
     	});
     

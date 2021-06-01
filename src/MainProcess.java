@@ -31,7 +31,7 @@ public class MainProcess {
     	this.main_frame.setMain(this);
     }
     
-    public void showRoomFrame() {
-    	this.room_frame = new Room_Frame();
+    public void showRoomFrame(String user) {
+    	this.room_frame = new Room_Frame(user);
     }
 }
