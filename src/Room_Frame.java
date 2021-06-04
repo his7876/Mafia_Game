@@ -98,7 +98,7 @@ public class Room_Frame extends JFrame{
     }
     
     private void Init() {
-    	setTitle("마피아 게임");
+    	setTitle("留덊뵾�븘 寃뚯엫");
         setSize(325 ,408);
         screenSizeLocation();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -121,7 +121,7 @@ public class Room_Frame extends JFrame{
     	scrollpane = new JScrollPane(Chat_Area);
     	scrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	
-    	Clock_Label = new JLabel("100초");
+    	Clock_Label = new JLabel("100珥�");
     	Clock_Label.setForeground(Color.red);
     	
     	daynightchange(true);
@@ -133,7 +133,7 @@ public class Room_Frame extends JFrame{
     	hm.put("555", true);
     	hm.put("666", false);
 
-    	dl = new Choose_Dialog(this, "사람", hm);
+    	dl = new Choose_Dialog(this, "�궗�엺", hm);
     
     	
     	Msg_Textbox = new JTextField();
@@ -152,7 +152,7 @@ public class Room_Frame extends JFrame{
     		}
     	});
     	
-    	Msg_Send_Button = new JButton("보내기");
+    	Msg_Send_Button = new JButton("蹂대궡湲�");
     	//Msg_Send_Button.setEnabled(false);
     	Msg_Send_Button.addActionListener(new ActionListener() {
     		@Override
@@ -181,8 +181,8 @@ public class Room_Frame extends JFrame{
     }
     
     private void makekilldialog(String name) {
-    	String[] answer = {"찬성", "반대"};
-    	int ans = JOptionPane.showOptionDialog(this, name + " 님을 죽이시겠습니까?", "Kill", JOptionPane.YES_NO_OPTION , JOptionPane.PLAIN_MESSAGE ,  null, answer, answer[0]);
+    	String[] answer = {"李ъ꽦", "諛섎�"};
+    	int ans = JOptionPane.showOptionDialog(this, name + " �떂�쓣 二쎌씠�떆寃좎뒿�땲源�?", "Kill", JOptionPane.YES_NO_OPTION , JOptionPane.PLAIN_MESSAGE ,  null, answer, answer[0]);
     	System.out.println("ans : "+ans);
     }
     
@@ -237,11 +237,14 @@ public class Room_Frame extends JFrame{
     
     public class msgReader implements Runnable{
     	public void run() {
-    		//시계
+    		//�떆怨�
     		
-    		//메시지
+    		//硫붿떆吏�
     		//Chat_Area.append(msg+"\n");
     	}
     }
+   
+    
+    
     
 }
