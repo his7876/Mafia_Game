@@ -51,6 +51,7 @@ public class GameCMConnector {
 	
 	public GameCMConnector() {
 		currentUsers = new ArrayList<String>();
+		markers = new boolean[5];
 	}
 	
 	// 현재 온라인 상태인 유저의 수를 반환한다.

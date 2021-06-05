@@ -51,10 +51,12 @@ public class UserGameEventInfo {
 	}
 	
 	public void fromString(String info) {
-		String[] temp = info.split("|");
+		String[] temp = info.split("\\|");
+		
 		if(temp.length < 4) {
 			return;
 		}
+		
 		opcode = Integer.parseInt(temp[0]);
 		roomID = Integer.parseInt(temp[1]);
 		userName = temp[2];

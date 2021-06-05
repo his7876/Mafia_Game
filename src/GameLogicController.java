@@ -190,6 +190,7 @@ public class GameLogicController implements Runnable{
 	// 시민 투표를 처리하는 함수
 	private void civilVoteProcess() throws InterruptedException {
 		connector.broadcastGameStage(0, getUserList(1));
+		currentAction = new CivilSecectBehaviour();
 		civilVotePrepare();
 		enableInturrupt();
 		Thread.sleep(1000 * CHAT_VOTE_TIME);
@@ -338,9 +339,15 @@ public class GameLogicController implements Runnable{
 	}
 	
 	public synchronized void processUserSelected(String who, String target) {
+		int sender, vote;
 		if(!disabledInturrupt) {
+			sender =  tryFindUser(who);
+			vote = Integer.parseInt(target);
+			if(sender == vote) {
+				return;
+			}
 			ServerLogger.printLog("[방 :" + roomid + "] 플레이어 : " + who + " (이)가 플레이어 : " + target + " 를 선택함");
-			currentAction.whenUserSelected(tryFindUser(target), tryFindUser(who), users, connector);
+			currentAction.whenUserSelected(vote, sender, users, connector);
 		}
 	}
 

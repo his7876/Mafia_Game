@@ -50,11 +50,14 @@ public class ServerEventHandler  implements CMAppEventHandler {
 	public ServerEventHandler(CMServerStub stub ) {
 		this.stub = stub;
 		CMGameGateway.getInstance().registerCM(stub);
+		dummyManager = new DummyEventHandler();
+		System.out.println("[Mafia Game] : Server Logic Start");
 	}
 	
 	
 	@Override
 	public void processEvent(CMEvent cme) {
+		ServerLogger.printLog("[서버] : 신호 수신함\n");
 		// TODO Auto-generated method stub
 		switch(cme.getType())
 		{
