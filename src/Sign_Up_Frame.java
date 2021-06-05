@@ -1,14 +1,14 @@
-
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 public class Sign_Up_Frame extends JFrame {
-    private MainProcess main;
+  
 	private Dimension frameSize, screenSize;
-    
+	ClientController controller;
     private JLabel lb1;
     private JLabel lb2;
     private JLabel lb3;
@@ -18,7 +18,8 @@ public class Sign_Up_Frame extends JFrame {
     private JButton Signup_Button;
     private boolean bPasswordCheck;
 
-    public Sign_Up_Frame(){
+    public Sign_Up_Frame(ClientController controller){
+    	this.controller = controller;
         Init();
     }
 
@@ -83,12 +84,34 @@ public class Sign_Up_Frame extends JFrame {
     
     private void signUp() {
     	//sign up
+    	
+    	String uname = Id_Textbox.getText();
+    	String upwd = new String(Password_Textbox.getPassword());
+    	String cpwd = new String(Password_Check_Textbox.getPassword());
+    	
+    	if(!(upwd.equals(cpwd)) || uname.isEmpty() || upwd.isEmpty() || cpwd.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Sign up fail", "Fail", JOptionPane.ERROR_MESSAGE);
+
+    	}else {
+    		 try {
+				controller.singUpCM(uname, upwd, cpwd);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		 JOptionPane.showMessageDialog(this, "Sign up complete" , "Complete", JOptionPane.INFORMATION_MESSAGE);
+             this.dispose();
+    	}
+    	
+    	/**
     	if(Id_Textbox.getText().equals("") && new String(Password_Textbox.getPassword()).equals("")){
             JOptionPane.showMessageDialog(this, "Sign up complete" , "Complete", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(this, "Sign up fail", "Fail", JOptionPane.ERROR_MESSAGE);
         }
+        **/
+        
     	
     }
     

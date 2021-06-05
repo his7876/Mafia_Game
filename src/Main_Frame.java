@@ -1,18 +1,17 @@
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.Vector;
 import java.awt.event.MouseAdapter;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
 
-
 public class Main_Frame extends JFrame{
 
-    private MainProcess main;
+ 
 	private Dimension frameSize, screenSize;
-	
+	ClientController controller;
 	private JLabel label;
     private JList Friends_List;
     private DefaultListModel friend_model;
@@ -21,11 +20,15 @@ public class Main_Frame extends JFrame{
     private JLabel User_Info_Text;
     private JButton Room_Create_Button;
     
+    private RoomController roomController;
+    
     private JTextField inputText;
     private String Username;
     
-    public Main_Frame(String user) {
+    public Main_Frame(String user, ClientController controller) {
+    	this.controller = controller;
     	Username = user;
+    	roomController = new RoomController();
     	Init();
     }
     
@@ -52,17 +55,28 @@ public class Main_Frame extends JFrame{
     		
     		@Override
     		public void actionPerformed(ActionEvent arg0) {
-    			main.showRoomFrame(Username);
+    			roomController.tryEnterRoom();
+    			try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			//main.showRoomFrame();
     		}
     	});
     
 
     	Friends_List = new JList(new DefaultListModel());
     	friend_model = (DefaultListModel)Friends_List.getModel();
-    	friend_model.addElement("User 1");
-    	friend_model.addElement("User 2");
-    	friend_model.addElement("User 3");
-    	friend_model.addElement("User 4");
+    	
+    	controller.getSessionMember();
+//    	
+//    	Vector<String> members = controller.getSessionMember();
+//    	
+//    	for(int i = 0; i < members.size(); i++) {
+//    		friend_model.addElement(members.get(i));
+//    	}
     	scrollpane2 = new JScrollPane(Friends_List);
     	scrollpane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	
@@ -84,9 +98,8 @@ public class Main_Frame extends JFrame{
     	setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2);
     }
     
-    public void setMain(MainProcess main) {
-        this.main = main;
-    }
+//    public void setMain(MainProcess main) {
+ //       this.main = main;
+  //  }
     
 }
-

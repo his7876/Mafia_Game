@@ -1,14 +1,18 @@
-
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import javax.swing.*;
 
 public class Login_Frame extends JFrame{
-    private MainProcess main;
+	
+	ClientController controller;
+    //private MainProcess main;
 	private Dimension frameSize, screenSize;
-
+	
     private JLabel userLabel;
     private JLabel passLabel;
     private JTextField Id_Textbox;
@@ -16,8 +20,14 @@ public class Login_Frame extends JFrame{
     private JButton Login_Button;
     private JButton Signup_Button;
     private boolean bLoginCheck;
+    
+    public Login_Frame() {
+    	Init();
+    	
+    }
 
-    public Login_Frame(){
+    public Login_Frame(ClientController controller){
+    	this.controller = controller;
         Init();
     }
 
@@ -47,7 +57,12 @@ public class Login_Frame extends JFrame{
         Password_Textbox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                isLoginCheck();
+                try {
+					isLoginCheck();
+				} catch (HeadlessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
 
@@ -55,7 +70,12 @@ public class Login_Frame extends JFrame{
         Login_Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                isLoginCheck();
+                try {
+					isLoginCheck();
+				} catch (HeadlessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
 
@@ -63,7 +83,9 @@ public class Login_Frame extends JFrame{
         Signup_Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.showSignUpFrame();
+            	
+            	Sign_Up_Frame sign_up_frame = new Sign_Up_Frame(controller);
+  //              main.showSignUpFrame();
             }
         });
         
@@ -84,7 +106,35 @@ public class Login_Frame extends JFrame{
 
     }
 
-    public void isLoginCheck(){
+    public void isLoginCheck() {
+   
+    	String uname = Id_Textbox.getText();
+    	String upwd = new String(Password_Textbox.getPassword());
+    	
+    	try {
+			if(controller.loginCM(uname, upwd)) {
+				 JOptionPane.showMessageDialog(this, "Login Success");
+			     bLoginCheck = true;
+
+			     if(isLogin()){
+			    	   Main_Frame main_frame = new Main_Frame((String)Id_Textbox.getText(),controller);                   
+   //             main.showMainFrame((String)Id_Textbox.getText());
+			    	   
+			     }
+			}
+			else {
+			    JOptionPane.showMessageDialog(this, "Login Faild", "Fail", JOptionPane.ERROR_MESSAGE);
+
+			}
+		} catch (HeadlessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	/**
         if(Id_Textbox.getText().equals("test") && new String(Password_Textbox.getPassword()).equals("1234")){
             JOptionPane.showMessageDialog(this, "Login Success");
             bLoginCheck = true;
@@ -95,6 +145,8 @@ public class Login_Frame extends JFrame{
         }else{
             JOptionPane.showMessageDialog(this, "Login Faild", "Fail", JOptionPane.ERROR_MESSAGE);
         }
+        
+        **/
     }
 
     public void screenSizeLocation() {
@@ -103,9 +155,9 @@ public class Login_Frame extends JFrame{
     	setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2);
     }
     
-    public void setMain(MainProcess main) {
-        this.main = main;
-    }
+//    public void setMain(MainProcess main) {
+ //       this.main = main;
+ //   }
 
     public boolean isLogin() {
         return bLoginCheck;
