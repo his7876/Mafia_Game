@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-// ¼ÅÇÃµîÀÇ ±â´ÉÀ» Áö¿øÇÏ´Â Å¬·¡½º
+// ì…”í”Œë“±ì˜ ê¸°ëŠ¥ì„ ì§€ì›í•˜ëŠ” í´ë˜ìŠ¤
 public class Randomizer {
 	private ArrayList<Integer> nums;
 	
@@ -21,7 +21,7 @@ public class Randomizer {
 	}
 	
 	
-	// ¸®½ºÆ® ¾ÈÀÇ ¿ä¼ÒµéÀ» ¼¯¾îÁÖ´Â ÇÔ¼ö
+	// ë¦¬ìŠ¤íŠ¸ ì•ˆì˜ ìš”ì†Œë“¤ì„ ì„ì–´ì£¼ëŠ” í•¨ìˆ˜
 	private void shuffle() {
 		Random random = new Random();
 		for(int i = 0; i < nums.size() * 2; i ++) {
@@ -37,7 +37,6 @@ public class Randomizer {
 	public int[] getNums(){
 		shuffle();
 		int[] ret = new int[nums.size()];
-		System.out.println("NumSize : " + nums.size());
 		for(int i = 0; i < nums.size(); i ++) {
 			ret[i] = nums.get(i);
 		}

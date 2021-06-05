@@ -39,52 +39,52 @@ import kr.ac.konkuk.ccslab.cm.manager.CMMqttManager;
 import kr.ac.konkuk.ccslab.cm.stub.CMClientStub;
 import kr.ac.konkuk.ccslab.cm.util.CMUtil;
 
-// ±¸Çö º¼·ı ¹×, ±â°£»óÀÇ ¹®Á¦·Î, ¸¹Àº ºÎºĞÀº ½ºÄÉÀÏ·¯ºíÀ» °í·ÁÇÏÁö ¾Ê°í, ÇÏµåÄÚµù µÇ¾úÀ½.
-// ÇÏµåÄÚµùµÈ ºÎºĞÀº ÁÖ¼®À¸·Î Ç¥½ÃÇß±â ¶§¹®¿¡, °æ¿ì¿¡ µû¶ó, ½ºÄÉÀÏ·¯ºíÇÑ ·ÎÁ÷À¸·Î °íÃÄÁÖ¸é µÈ´Ù.
+// êµ¬í˜„ ë³¼ë¥¨ ë°, ê¸°ê°„ìƒì˜ ë¬¸ì œë¡œ, ë§ì€ ë¶€ë¶„ì€ ìŠ¤ì¼€ì¼ëŸ¬ë¸”ì„ ê³ ë ¤í•˜ì§€ ì•Šê³ , í•˜ë“œì½”ë”© ë˜ì—ˆìŒ.
+// í•˜ë“œì½”ë”©ëœ ë¶€ë¶„ì€ ì£¼ì„ìœ¼ë¡œ í‘œì‹œí–ˆê¸° ë•Œë¬¸ì—, ê²½ìš°ì— ë”°ë¼, ìŠ¤ì¼€ì¼ëŸ¬ë¸”í•œ ë¡œì§ìœ¼ë¡œ ê³ ì³ì£¼ë©´ ëœë‹¤.
 
 
 /*
- * µ¿±âÈ­ °ü·Ã
+ * ë™ê¸°í™” ê´€ë ¨
  * 
- * µ¿±âÈ­ ¹®Á¦¸¦ ½±°Ô ÇØ°áÇÏ±â À§ÇØ¼­, ÀÎÅÍ·´Æ®¶ó´Â °³³äÀ» »õ·Î Á¤ÀÇÇÏ¿´´Ù.
+ * ë™ê¸°í™” ë¬¸ì œë¥¼ ì‰½ê²Œ í•´ê²°í•˜ê¸° ìœ„í•´ì„œ, ì¸í„°ëŸ½íŠ¸ë¼ëŠ” ê°œë…ì„ ìƒˆë¡œ ì •ì˜í•˜ì˜€ë‹¤.
  * 
- * ÀÌ Å¬·¡½º ÀÔÀå¿¡¼­, ½º·¹µå´Â ÃÑ 2°¡Áö¶ó°í ´À³¥ ¼ö ÀÖ´Ù. 
- * ÇÏ³ª´Â °ÔÀÓ ½º·¹µåÀÌ°í
- * ³ª¸ÓÁö ÇÏ³ª´Â, mainÇÔ¼ö ·ÎÁ÷ÀÌ´Ù(CM ÀÌº¥Æ® ÇÚµé·¯)
+ * ì´ í´ë˜ìŠ¤ ì…ì¥ì—ì„œ, ìŠ¤ë ˆë“œëŠ” ì´ 2ê°€ì§€ë¼ê³  ëŠë‚„ ìˆ˜ ìˆë‹¤. 
+ * í•˜ë‚˜ëŠ” ê²Œì„ ìŠ¤ë ˆë“œì´ê³ 
+ * ë‚˜ë¨¸ì§€ í•˜ë‚˜ëŠ”, mainí•¨ìˆ˜ ë¡œì§ì´ë‹¤(CM ì´ë²¤íŠ¸ í•¸ë“¤ëŸ¬)
  * 
- * ÀÌ¶§, ÀÎÅÍ·´Æ®´Â, mainÇÔ¼ö·Î, CMÇÚµé¸µ ¿äÃ»ÀÌ µé¾î¿ÈÀ» ÀÇ¹ÌÇÑ´Ù.
- * ¿ÜºÎ¿¡¼­ ÀÌ Å¬·¡½ºÀÇ °ªÀ» ¹Ù²Ù´Â ¹æ½ÄÀº setter»ÓÀÎµ¥, ÀÌ getter, setter¸¦ ÀÎÅÍ·´Æ®¶ó°í Á¤ÀÇÇÑ´Ù.
- * ÀÎÅÍ·´Æ®¸¦ disableÇÏ¸é, ÀÌ setter°¡ ½ÇÇàµÇ´õ¶óµµ, ÀÌ Å¬·¡½º¿¡ ¿µÇâÀ» ÁÙ ¼ö ¾ø´Ù.
+ * ì´ë•Œ, ì¸í„°ëŸ½íŠ¸ëŠ”, mainí•¨ìˆ˜ë¡œ, CMí•¸ë“¤ë§ ìš”ì²­ì´ ë“¤ì–´ì˜´ì„ ì˜ë¯¸í•œë‹¤.
+ * ì™¸ë¶€ì—ì„œ ì´ í´ë˜ìŠ¤ì˜ ê°’ì„ ë°”ê¾¸ëŠ” ë°©ì‹ì€ setterë¿ì¸ë°, ì´ getter, setterë¥¼ ì¸í„°ëŸ½íŠ¸ë¼ê³  ì •ì˜í•œë‹¤.
+ * ì¸í„°ëŸ½íŠ¸ë¥¼ disableí•˜ë©´, ì´ setterê°€ ì‹¤í–‰ë˜ë”ë¼ë„, ì´ í´ë˜ìŠ¤ì— ì˜í–¥ì„ ì¤„ ìˆ˜ ì—†ë‹¤.
  * 
- * µû¶ó¼­, ÀÎÅÍ·´Æ®°¡ disableµÈ »óÅÂ¿¡¼­´Â, ÀÚ½Ä ½º·¹µå¸¸ »ì¾ÆÀÖ´Â °Í Ã³·³ »ı°¢ÇÏ°í ÇÁ·Î±×·¡¹Ö ÇØµµ »ó°üÀÌ ¾ø´Ù.
- * setter´Â Ç×»ó, ÀÎÅÍ·´Æ® È°¼º/ºñÈ°¼º ÇÔ¼ö¿ÍÀÇ µ¿±âÈ­¸¦ °í·ÁÇØ¾ß ÇÑ´Ù.
+ * ë”°ë¼ì„œ, ì¸í„°ëŸ½íŠ¸ê°€ disableëœ ìƒíƒœì—ì„œëŠ”, ìì‹ ìŠ¤ë ˆë“œë§Œ ì‚´ì•„ìˆëŠ” ê²ƒ ì²˜ëŸ¼ ìƒê°í•˜ê³  í”„ë¡œê·¸ë˜ë° í•´ë„ ìƒê´€ì´ ì—†ë‹¤.
+ * setterëŠ” í•­ìƒ, ì¸í„°ëŸ½íŠ¸ í™œì„±/ë¹„í™œì„± í•¨ìˆ˜ì™€ì˜ ë™ê¸°í™”ë¥¼ ê³ ë ¤í•´ì•¼ í•œë‹¤.
  * 
  * */
 
-// Àü¹İÀûÀÎ °ÔÀÓÀÇ ¸ğµç ·ÎÁ÷À» Ã³¸®ÇÏ´Â Å¬·¡½º
+// ì „ë°˜ì ì¸ ê²Œì„ì˜ ëª¨ë“  ë¡œì§ì„ ì²˜ë¦¬í•˜ëŠ” í´ë˜ìŠ¤
 public class GameLogicController implements Runnable{
 	// Field
-	private GameUser[] users = new GameUser[5]; // ÀÌ ºÎºĞÀº ÇÏµåÄÚµù µÇ¾îÀÖ½À´Ï´Ù. ÀÌ¿¡ µû¶ó¼­, À¯Àú ¼öÀÇ ½ºÄÉÀÏ·¯ºíÀº °í·Á´ë»óÀÌ ¾Æ´Õ´Ï´Ù.
+	private GameUser[] users = new GameUser[5]; // ì´ ë¶€ë¶„ì€ í•˜ë“œì½”ë”© ë˜ì–´ìˆìŠµë‹ˆë‹¤. ì´ì— ë”°ë¼ì„œ, ìœ ì € ìˆ˜ì˜ ìŠ¤ì¼€ì¼ëŸ¬ë¸”ì€ ê³ ë ¤ëŒ€ìƒì´ ì•„ë‹™ë‹ˆë‹¤.
 	private GameCMConnector connector;
-	private int alive = 5; // ÇöÀç »ıÁ¸ »óÅÂÀÎ À¯ÀúÀÇ ¼ö
-	private volatile int voteCount; // ÀÌ º¯¼ö´Â Ä³½¬¿¡ ÀûÀçµÇ¸é ¾ÈµÈ´Ù. Ä³½¬ µ¿±âÈ­ ÀÌ½´¸¦ ÇÇÇÏ±â À§ÇÔÀÌ´Ù.
-	private volatile boolean disabledInturrupt = false; // µ¿±âÈ­¸¦ À§ÇØ, ¸Ş¸ğ¸®¿¡ ÀûÁ¦ÇÑ´Ù. µ¿±âÈ­¸¦ À§ÇÑ state-variableÀÌ´Ù.
+	private int alive = 5; // í˜„ì¬ ìƒì¡´ ìƒíƒœì¸ ìœ ì €ì˜ ìˆ˜
+	private volatile int voteCount; // ì´ ë³€ìˆ˜ëŠ” ìºì‰¬ì— ì ì¬ë˜ë©´ ì•ˆëœë‹¤. ìºì‰¬ ë™ê¸°í™” ì´ìŠˆë¥¼ í”¼í•˜ê¸° ìœ„í•¨ì´ë‹¤.
+	private volatile boolean disabledInturrupt = false; // ë™ê¸°í™”ë¥¼ ìœ„í•´, ë©”ëª¨ë¦¬ì— ì ì œí•œë‹¤. ë™ê¸°í™”ë¥¼ ìœ„í•œ state-variableì´ë‹¤.
 	private int targetUser = -1;
 	private int mafia, police, doctor;
-	private UserSelectedBehaviour currentAction; // À¯Àú¸¦ ¼±ÅÃ ÇßÀ»¶§ÀÇ request ÇÚµé·¯
-	private boolean exitCondition = false; // °ÔÀÓ Á¾·á Á¶°ÇÀÌ ´Ş¼ºµÇ¾ú´Â°¡?
+	private UserSelectedBehaviour currentAction; // ìœ ì €ë¥¼ ì„ íƒ í–ˆì„ë•Œì˜ request í•¸ë“¤ëŸ¬
+	private boolean exitCondition = false; // ê²Œì„ ì¢…ë£Œ ì¡°ê±´ì´ ë‹¬ì„±ë˜ì—ˆëŠ”ê°€?
 	private GameSessionCallback collectResource; //
-	private int gameExitStatus = -1; // °ÔÀÓ Á¾·á ÀÌÀ¯
+	private int gameExitStatus = -1; // ê²Œì„ ì¢…ë£Œ ì´ìœ 
 	private int roomid = 0;
 	
-	private static final int CHAT_VOTE_TIME = 60; // ÃÊ±â ÅõÇ¥ ½Ã°£
-	private static final int PROS_CONS_TIME = 20; // Âù¹İ ÅõÇ¥ ½Ã°£
-	private static final int NIGHT_JOB_TIME = 20; // ¹ã ½Ã°£¿¡ °¢ Á÷¾÷ÀÌ ¼±ÅÃÇÏ´Â ½Ã°£
+	private static final int CHAT_VOTE_TIME = 60; // ì´ˆê¸° íˆ¬í‘œ ì‹œê°„
+	private static final int PROS_CONS_TIME = 20; // ì°¬ë°˜ íˆ¬í‘œ ì‹œê°„
+	private static final int NIGHT_JOB_TIME = 20; // ë°¤ ì‹œê°„ì— ê° ì§ì—…ì´ ì„ íƒí•˜ëŠ” ì‹œê°„
 	
 	
-	private static final int CIVIL_WIN = 0; // ½Ã¹Î ½Â
-	private static final int MAFIA_WIN = 1; // ¸¶ÇÇ¾Æ ½Â
-	private static final int SOMEONE_EXIT = 2; // ´©±º°¡ ³ª°¡¼­, °ÔÀÓ ÁøÇàÀÌ ºÒ°¡´É
+	private static final int CIVIL_WIN = 0; // ì‹œë¯¼ ìŠ¹
+	private static final int MAFIA_WIN = 1; // ë§ˆí”¼ì•„ ìŠ¹
+	private static final int SOMEONE_EXIT = 2; // ëˆ„êµ°ê°€ ë‚˜ê°€ì„œ, ê²Œì„ ì§„í–‰ì´ ë¶ˆê°€ëŠ¥
 	
 	
 	// Constructor
@@ -104,11 +104,11 @@ public class GameLogicController implements Runnable{
 	//Methods
 	
 	
-	// ¹æ¿¡ Âü¿©ÇÑ À¯Àúµé¿¡°Ô Á÷¾÷À» ÇÒ´çÇÑ´Ù.
+	// ë°©ì— ì°¸ì—¬í•œ ìœ ì €ë“¤ì—ê²Œ ì§ì—…ì„ í• ë‹¹í•œë‹¤.
 	private void assignJob() {
 		int[] jobs;
 		Randomizer randomizer = new Randomizer();
-		// ¿ª½Ã À¯Àú Ã³¸® ºÎºĞÀº ÇÏµå ÄÚµùÀ¸·Î ´ëÃ¼ÇÑ´Ù.(½Ã¹Î : 2, ¸¶ÇÇ¾Æ : 1, °æÂû : 1, ÀÇ»ç : 1)
+		// ì—­ì‹œ ìœ ì € ì²˜ë¦¬ ë¶€ë¶„ì€ í•˜ë“œ ì½”ë”©ìœ¼ë¡œ ëŒ€ì²´í•œë‹¤.(ì‹œë¯¼ : 2, ë§ˆí”¼ì•„ : 1, ê²½ì°° : 1, ì˜ì‚¬ : 1)
 		randomizer.addNumber(0);
 		randomizer.addNumber(0);
 		randomizer.addNumber(1);
@@ -116,13 +116,13 @@ public class GameLogicController implements Runnable{
 		randomizer.addNumber(3);
 		jobs = randomizer.getNums();
 		
-		ServerLogger.printLog("[¹æ :" + roomid + "] °¢ À¯Àúµé¿¡°Ô Á÷¾÷À» ¹èÁ¤ ½ÃÀÛ" );
-		// ¹«ÀÛÀ§·Î ÇÒ´ç¹ŞÀº Á÷¾÷À» ¹èÁ¤
+		ServerLogger.printLog("[ë°© :" + roomid + "] ê° ìœ ì €ë“¤ì—ê²Œ ì§ì—…ì„ ë°°ì • ì‹œì‘" );
+		// ë¬´ì‘ìœ„ë¡œ í• ë‹¹ë°›ì€ ì§ì—…ì„ ë°°ì •
 		for(int i = 0; i < users.length; i ++) {
 			
 			users[i].job = jobs[i];
-			ServerLogger.printLog("[¹æ :" + roomid + "] À¯Àú > " + users[i].userName +" < ¿¡°Ô Á÷¾÷ : " + jobs[i] + "¸¦ ¹èÁ¤ÇÔ" );
-			connector.castJobInfo(users[i].userName, users[i].job); // °¢ À¯Àú¿¡°Ô ÇØ´ç À¯ÀúÀÇ Á÷¾÷À» ¹æ¼Û
+			ServerLogger.printLog("[ë°© :" + roomid + "] ìœ ì € > " + users[i].userName +" < ì—ê²Œ ì§ì—… : " + jobs[i] + "ë¥¼ ë°°ì •í•¨" );
+			connector.castJobInfo(users[i].userName, users[i].job); // ê° ìœ ì €ì—ê²Œ í•´ë‹¹ ìœ ì €ì˜ ì§ì—…ì„ ë°©ì†¡
 			switch(i) {
 			case 1 :
 				mafia = i;
@@ -136,11 +136,11 @@ public class GameLogicController implements Runnable{
 			default:
 			}
 		}
-		ServerLogger.printLog("[¹æ :" + roomid + "] °¢ À¯Àúµé¿¡°Ô Á÷¾÷À» ¹èÁ¤ ¿Ï·á" );
+		ServerLogger.printLog("[ë°© :" + roomid + "] ê° ìœ ì €ë“¤ì—ê²Œ ì§ì—…ì„ ë°°ì • ì™„ë£Œ" );
 		
 	}
 	
-	// ¹æ¿¡ Âü¿©ÇÑ À¯ÀúµéÀÇ »óÅÂ¸¦ È®ÀÎÇÑ´Ù.
+	// ë°©ì— ì°¸ì—¬í•œ ìœ ì €ë“¤ì˜ ìƒíƒœë¥¼ í™•ì¸í•œë‹¤.
 	private void initForNextTurn() {
 		for(int i = 0; i < users.length; i ++) {
 			users[i].cleanState();
@@ -148,35 +148,35 @@ public class GameLogicController implements Runnable{
 		targetUser = -1;
 	}
 	
-	// µ¿±âÈ­ ÇÔ¼ö, CMÀÎÅÍ·´Æ®¸¦ ¹«½ÃÇÑ´Ù.
+	// ë™ê¸°í™” í•¨ìˆ˜, CMì¸í„°ëŸ½íŠ¸ë¥¼ ë¬´ì‹œí•œë‹¤.
 	private synchronized void disableInturrupt() {
 		disabledInturrupt = true;
 	}
 	
-	// µ¿±âÈ­ ÇÔ¼ö, CMÀÎÅÍ·´Æ®¸¦ ¹Ş¾ÆµéÀÎ´Ù.
+	// ë™ê¸°í™” í•¨ìˆ˜, CMì¸í„°ëŸ½íŠ¸ë¥¼ ë°›ì•„ë“¤ì¸ë‹¤.
 	private synchronized void enableInturrupt() {
 		disabledInturrupt = false;
 	}
 	
 	
-	// ½Ã¹Î ÅõÇ¥¸¦ ½ÃÀÛÇÏ´Â ÇÔ¼ö
+	// ì‹œë¯¼ íˆ¬í‘œë¥¼ ì‹œì‘í•˜ëŠ” í•¨ìˆ˜
 	private void civilVotePrepare() {
 		connector.controllChatFunctionAll(true);
 		connector.controllUserSelectFunctionAll(true);
 	}
 	
 	
-	// ½Ã¹Î ÅõÇ¥¸¦ Á¾·áÇÏ´Â ÇÔ¼ö
+	// ì‹œë¯¼ íˆ¬í‘œë¥¼ ì¢…ë£Œí•˜ëŠ” í•¨ìˆ˜
 	private void civilVoteClose() {
 		connector.controllUserSelectFunctionAll(false);
 	}
 	
-	// ½Ã¹Î ÅõÇ¥ °á°ú¸¦ Áı°èÇÏ´Â ÇÔ¼ö
+	// ì‹œë¯¼ íˆ¬í‘œ ê²°ê³¼ë¥¼ ì§‘ê³„í•˜ëŠ” í•¨ìˆ˜
 	private void civilVoteResult() {
 		int who, score;
 		score = 0;
-		who = -1; // ¾Æ¹«µµ ÅõÇ¥¸¦ ÇÏÁö ¾Ê¾Ò´Ù¸é, Âù¹İ ÅõÇ¥¸¦ »ı·«
-		// °¢ À¯Àú¸¦ ¼øÈ¸ÇÏ¸ç, ÃÖ´Ù µæÇ¥¸¦ ÇÑ À¯Àú¸¦ Å½»ö
+		who = -1; // ì•„ë¬´ë„ íˆ¬í‘œë¥¼ í•˜ì§€ ì•Šì•˜ë‹¤ë©´, ì°¬ë°˜ íˆ¬í‘œë¥¼ ìƒëµ
+		// ê° ìœ ì €ë¥¼ ìˆœíšŒí•˜ë©°, ìµœë‹¤ ë“í‘œë¥¼ í•œ ìœ ì €ë¥¼ íƒìƒ‰
 		for(int i = 0 ; i < users.length; i ++) {
 			if(users[i].voteCount > score) {
 				score = users[i].voteCount;
@@ -187,7 +187,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	
-	// ½Ã¹Î ÅõÇ¥¸¦ Ã³¸®ÇÏ´Â ÇÔ¼ö
+	// ì‹œë¯¼ íˆ¬í‘œë¥¼ ì²˜ë¦¬í•˜ëŠ” í•¨ìˆ˜
 	private void civilVoteProcess() throws InterruptedException {
 		connector.broadcastGameStage(0, getUserList(1));
 		currentAction = new CivilSecectBehaviour();
@@ -200,26 +200,26 @@ public class GameLogicController implements Runnable{
 	}
 	
 	
-	// Âù¹İ ÅõÇ¥¸¦ ½ÃÀÛÇÏ´Â ÇÔ¼ö
+	// ì°¬ë°˜ íˆ¬í‘œë¥¼ ì‹œì‘í•˜ëŠ” í•¨ìˆ˜
 	private void civilProsConsPrepare() {
 		connector.controllVoteFunctionAll(true, users[targetUser].userName);
 	}
 	
 	
-	// Âù¹İ ÅõÇ¥¸¦ Á¾·áÇÏ´Â ÇÔ¼ö
+	// ì°¬ë°˜ íˆ¬í‘œë¥¼ ì¢…ë£Œí•˜ëŠ” í•¨ìˆ˜
 	private void civilProsConsClose() {
 		connector.controllVoteFunctionAll(false, "END");
 		connector.controllChatFunctionAll(false);
 	}
 	
-	// Âù¹İ ÅõÇ¥ °á°ú¸¦ Áı°èÇÏ´Â ÇÔ¼ö
+	// ì°¬ë°˜ íˆ¬í‘œ ê²°ê³¼ë¥¼ ì§‘ê³„í•˜ëŠ” í•¨ìˆ˜
 	private void civilProsConsResult() {
 		if(voteCount > alive / 2) {
 			killPlayer(targetUser);
 		}
 	}
 	
-	// Âù¹İ ÅõÇ¥¸¦ ÁøÇàÇÏ´Â ÇÔ¼ö
+	// ì°¬ë°˜ íˆ¬í‘œë¥¼ ì§„í–‰í•˜ëŠ” í•¨ìˆ˜
 	private void civilProsConsProcess() throws InterruptedException {
 		if(targetUser == -1){
 			return;
@@ -243,23 +243,23 @@ public class GameLogicController implements Runnable{
 		return ret;
 	}
 	
-	// ÇØ´ç idÀÇ ÇÃ·¹ÀÌ¾î¸¦ »ç¸Á Ã³¸®ÇÏ´Â ÇÔ¼ö
+	// í•´ë‹¹ idì˜ í”Œë ˆì´ì–´ë¥¼ ì‚¬ë§ ì²˜ë¦¬í•˜ëŠ” í•¨ìˆ˜
 	private void killPlayer(int id) {
 		if(!users[id].isProtected) {
 			users[id].alive = false;
 			connector.markUser(id, false);
 			connector.controllChatFunction(users[id].userName, false);
 			connector.broadcastUserDie(users[id].userName, null);
-			ServerLogger.printLog("[¹æ :" + roomid + "] ÇÃ·¹ÀÌ¾î : " + users[id].userName + "  »ç¸ÁÇÔ");
+			ServerLogger.printLog("[ë°© :" + roomid + "] í”Œë ˆì´ì–´ : " + users[id].userName + "  ì‚¬ë§í•¨");
 		}
 		if(id == mafia) {
-			ServerLogger.printLog("[¹æ :" + roomid + "] ¸¶ÇÇ¾Æ¸¦ Àâ¾Æ³¿, ½Ã¹Î ½Â¸®" );
+			ServerLogger.printLog("[ë°© :" + roomid + "] ë§ˆí”¼ì•„ë¥¼ ì¡ì•„ëƒ„, ì‹œë¯¼ ìŠ¹ë¦¬" );
 			gameExitStatus = CIVIL_WIN;
 			exitCondition = true;
 			connector.broadcastGameEnd(0);
 		}
 		if(checkAlivePlayer() < 2) {
-			ServerLogger.printLog("[¹æ :" + roomid + "] ½Ã¹ÎÀÇ ¼ö°¡ ¸¶ÇÇ¾Æ¿Í °°¾ÆÁü, ¸¶ÇÇ¾Æ ½Â¸®" );
+			ServerLogger.printLog("[ë°© :" + roomid + "] ì‹œë¯¼ì˜ ìˆ˜ê°€ ë§ˆí”¼ì•„ì™€ ê°™ì•„ì§, ë§ˆí”¼ì•„ ìŠ¹ë¦¬" );
 			gameExitStatus = MAFIA_WIN;
 			exitCondition = true;
 			connector.broadcastGameEnd(1);
@@ -280,7 +280,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	private void doMafiaJob() throws InterruptedException{
-		ServerLogger.printLog("[¹æ :" + roomid + "] ¸¶ÇÇ¾Æ ¾×¼Ç ½ÃÀÛ" );
+		ServerLogger.printLog("[ë°© :" + roomid + "] ë§ˆí”¼ì•„ ì•¡ì…˜ ì‹œì‘" );
 		connector.broadcastGameStage(2, getUserList(1));
 		connector.controllUserSelectFunction(users[mafia].userName, true);
 		currentAction = new MafiaSelectBehaviour();
@@ -291,7 +291,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	private void doDoctorJob() throws InterruptedException{
-		ServerLogger.printLog("[¹æ :" + roomid + "] ÀÇ»ç ¾×¼Ç ½ÃÀÛ" );
+		ServerLogger.printLog("[ë°© :" + roomid + "] ì˜ì‚¬ ì•¡ì…˜ ì‹œì‘" );
 		connector.broadcastGameStage(3, getUserList(1));
 		connector.controllUserSelectFunction(users[doctor].userName, true);
 		currentAction = new DoctorSelectBehaviour();
@@ -302,7 +302,7 @@ public class GameLogicController implements Runnable{
 	}
 	
 	private void doPoliceJob() throws InterruptedException{
-		ServerLogger.printLog("[¹æ :" + roomid + "] °æÂû ¾×¼Ç ½ÃÀÛ" );
+		ServerLogger.printLog("[ë°© :" + roomid + "] ê²½ì°° ì•¡ì…˜ ì‹œì‘" );
 		connector.broadcastGameStage(4, getUserList(1));
 		connector.controllUserSelectFunction(users[police].userName, true);
 		currentAction = new PoliceSelectBehaviour();
@@ -330,7 +330,7 @@ public class GameLogicController implements Runnable{
 			}
 			if(!users[subject].isVoted) {
 				users[subject].isVoted = true;
-				ServerLogger.printLog("[¹æ :" + roomid + "] ÇÃ·¹ÀÌ¾î : "+ user + "°¡ °á°ú¿¡ " + pros );
+				ServerLogger.printLog("[ë°© :" + roomid + "] í”Œë ˆì´ì–´ : "+ user + "ê°€ ê²°ê³¼ì— " + pros );
 				if(pros) {
 					voteCount ++;
 				}
@@ -346,7 +346,7 @@ public class GameLogicController implements Runnable{
 			if(sender == vote) {
 				return;
 			}
-			ServerLogger.printLog("[¹æ :" + roomid + "] ÇÃ·¹ÀÌ¾î : " + who + " (ÀÌ)°¡ ÇÃ·¹ÀÌ¾î : " + target + " ¸¦ ¼±ÅÃÇÔ");
+			ServerLogger.printLog("[ë°© :" + roomid + "] í”Œë ˆì´ì–´ : " + who + " (ì´)ê°€ í”Œë ˆì´ì–´ : " + target + " ë¥¼ ì„ íƒí•¨");
 			currentAction.whenUserSelected(vote, sender, users, connector);
 		}
 	}
@@ -358,23 +358,23 @@ public class GameLogicController implements Runnable{
 		assignJob();
 		try {
 			while (!exitCondition) {
-				ServerLogger.printLog("[¹æ :" + roomid + "] ½Ã¹Î ÅõÇ¥ ½ÃÀÛÇÔ" );
+				ServerLogger.printLog("[ë°© :" + roomid + "] ì‹œë¯¼ íˆ¬í‘œ ì‹œì‘í•¨" );
 				civilVoteProcess();
 				if(exitCondition) {continue;}
 				
-				ServerLogger.printLog("[¹æ :" + roomid + "] °áÁ¤µÈ À¯Àú¿¡ ´ëÇÑ Âù¹İ ÅõÇ¥¸¦ ½ÃÀÛÇÔ" );
+				ServerLogger.printLog("[ë°© :" + roomid + "] ê²°ì •ëœ ìœ ì €ì— ëŒ€í•œ ì°¬ë°˜ íˆ¬í‘œë¥¼ ì‹œì‘í•¨" );
 				civilProsConsProcess();
 				if(exitCondition) {continue;}
 				
-				ServerLogger.printLog("[¹æ :" + roomid + "] ¹ãÀÌ µÊ, °¢ Á÷¾÷µéÀÇ ±â´ÉÀ» ½ÃÀÛ" );
+				ServerLogger.printLog("[ë°© :" + roomid + "] ë°¤ì´ ë¨, ê° ì§ì—…ë“¤ì˜ ê¸°ëŠ¥ì„ ì‹œì‘" );
 				nightAction();
-				ServerLogger.printLog("[¹æ :" + roomid + "] ³·ÀÌ µÊ" );
+				ServerLogger.printLog("[ë°© :" + roomid + "] ë‚®ì´ ë¨" );
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ServerLogger.printLog("[¹æ :" + roomid + "] °ÔÀÓ Á¾·á, ÀÚ¿ø È¸¼ö ¿äÃ»" );
+		ServerLogger.printLog("[ë°© :" + roomid + "] ê²Œì„ ì¢…ë£Œ, ìì› íšŒìˆ˜ ìš”ì²­" );
 		collectResource.requestCollectGameThread(-1, gameExitStatus);
 		
 	}

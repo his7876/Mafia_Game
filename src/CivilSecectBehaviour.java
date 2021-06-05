@@ -1,4 +1,3 @@
-
 public class CivilSecectBehaviour implements UserSelectedBehaviour{
 
 	@Override

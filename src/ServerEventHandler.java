@@ -57,7 +57,6 @@ public class ServerEventHandler  implements CMAppEventHandler {
 	
 	@Override
 	public void processEvent(CMEvent cme) {
-		ServerLogger.printLog("[서버] : 신호 수신함\n");
 		// TODO Auto-generated method stub
 		switch(cme.getType())
 		{
