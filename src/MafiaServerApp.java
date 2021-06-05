@@ -22,9 +22,10 @@ public class MafiaServerApp {
 	}
 	
 	public static void main(String[] args) { 
-		CMServerApp server = new CMServerApp(); 
+		MafiaServerApp server = new MafiaServerApp(); 
 		CMServerStub cmStub = server.getServerStub(); 
 		cmStub.setAppEventHandler(server.getServerEventHandler()); 
 		cmStub.startCM();
+		System.out.println("[Mafia Game] : Server Start");
 	} 
 }

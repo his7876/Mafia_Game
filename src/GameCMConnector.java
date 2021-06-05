@@ -41,7 +41,7 @@ import kr.ac.konkuk.ccslab.cm.util.CMUtil;
 
 public class GameCMConnector {
 	public List<String> currentUsers;
-	private boolean[] markers; // ÀÌ ¸¶Ä¿°¡ Ç¥½ÃµÈ À¯Àú¿¡°Ô´Â Controll AllÇÔ¼ö°¡ Àü´ŞµÇÁö ¾Ê´Â´Ù.
+	private boolean[] markers; // ì´ ë§ˆì»¤ê°€ í‘œì‹œëœ ìœ ì €ì—ê²ŒëŠ” Controll Allí•¨ìˆ˜ê°€ ì „ë‹¬ë˜ì§€ ì•ŠëŠ”ë‹¤.
 	public static final String[] OPCODE_INFO = {"Game Start", "Send Job", "Select User", "Process Chat", "Enable Chat"
 			,"Disable Chat", "Enable Pros Cons", "Disable Pros Cons", "Cast Player Death", "Request Select User"
 			, "Request Stop User Select", "Civil Win", "Mafia Win", "Cannot Play Game", "Request Pros Cons"
@@ -51,14 +51,15 @@ public class GameCMConnector {
 	
 	public GameCMConnector() {
 		currentUsers = new ArrayList<String>();
+		markers = new boolean[5];
 	}
 	
-	// ÇöÀç ¿Â¶óÀÎ »óÅÂÀÎ À¯ÀúÀÇ ¼ö¸¦ ¹İÈ¯ÇÑ´Ù.
+	// í˜„ì¬ ì˜¨ë¼ì¸ ìƒíƒœì¸ ìœ ì €ì˜ ìˆ˜ë¥¼ ë°˜í™˜í•œë‹¤.
 	public int checkUsersOnline() {
 		return currentUsers.size();
 	}
 	
-	// ÀÌ ¹æ¿¡ À¯Àú¸¦ Ãß°¡ÇÑ´Ù
+	// ì´ ë°©ì— ìœ ì €ë¥¼ ì¶”ê°€í•œë‹¤
 	public boolean tryAddUser(String user) {
 		if(currentUsers.size() < 5) {
 			currentUsers.add(user);
@@ -210,7 +211,7 @@ public class GameCMConnector {
 	}
 	
 	private void sendEvent(UserGameEventInfo event, String to) {
-		ServerLogger.printLog("[¼­¹ö -> Å¬¶óÀÌ¾ğÆ®] ÀÌº¥Æ®¸í : " + OPCODE_INFO[event.opcode] + ", Àü¼Û ´ë»ó : " + to + ", ÀÎÀÚ : " + event.args + ", ÇöÀç ¹æ : " + event.roomID);
+		ServerLogger.printLog("[ì„œë²„ -> í´ë¼ì´ì–¸íŠ¸] ì´ë²¤íŠ¸ëª… : " + OPCODE_INFO[event.opcode] + ", ì „ì†¡ ëŒ€ìƒ : " + to + ", ì¸ì : " + event.args + ", í˜„ì¬ ë°© : " + event.roomID);
 		CMGameGateway.getInstance().sendGameEvent(event, to);
 	}
 
