@@ -15,8 +15,8 @@ public class GameController extends Thread{
 //	private ClientController clientController;
 //	private ClientControllerEventHandler clientHandler = new ClientControllerEventHandler( , clientController);// stub 占쎈퓠 �맱占� ?
 
-	public GameController() {
-		clientStub = new CMClientStub();
+	public GameController(CMClientStub clientStub) {
+		this.clientStub = clientStub;
 	}
 	
 	public void sendDummyEvent(String opcode, String msg) {

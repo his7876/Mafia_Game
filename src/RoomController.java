@@ -8,8 +8,8 @@ public class RoomController {
 	//private ClientController u_Event = new ClientController();
 	private CMClientStub clientStub;
 
-	public RoomController() {
-		clientStub = new CMClientStub();
+	public RoomController(CMClientStub clientStub) {
+		this.clientStub = clientStub;
 	}
 	
 	public String makeMsg(String args) {

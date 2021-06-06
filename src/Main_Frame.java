@@ -28,7 +28,7 @@ public class Main_Frame extends JFrame{
     public Main_Frame(String user, ClientController controller) {
     	this.controller = controller;
     	Username = user;
-    	roomController = new RoomController();
+    	roomController = new RoomController(controller.getClientStub());
     	Init();
     }
     
