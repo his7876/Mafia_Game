@@ -71,13 +71,13 @@ public class Main_Frame extends JFrame{
     	Friends_List = new JList(new DefaultListModel());
     	friend_model = (DefaultListModel)Friends_List.getModel();
     	
-    	controller.getSessionMember();
-//    	
-//    	Vector<String> members = controller.getSessionMember();
-//    	
-//    	for(int i = 0; i < members.size(); i++) {
-//    		friend_model.addElement(members.get(i));
-//    	}
+    	
+    	
+    	ArrayList members = controller.getSessionMember();
+    	
+    	for(int i = 0; i < members.size(); i++) {
+   		friend_model.addElement(members.get(i));
+    	}
     	scrollpane2 = new JScrollPane(Friends_List);
     	scrollpane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	

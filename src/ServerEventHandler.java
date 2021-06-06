@@ -63,9 +63,60 @@ public class ServerEventHandler  implements CMAppEventHandler {
 		case CMInfo.CM_DUMMY_EVENT:
 			dummyManager.handleGameEvent(cme);
 			break;
+		case CMInfo.CM_SESSION_EVENT:
+			processSessionEvent(cme);
 		default:
 			return;
 		}
 	}
 	
+	//DB 내 로그인 정보 검증 과정 추가 
+	public void processSessionEvent(CMEvent cme) {
+		CMConfigurationInfo confInfo = stub.getCMInfo().getConfigurationInfo();
+		CMSessionEvent se = (CMSessionEvent) cme;
+		switch (se.getID()) {
+		case CMSessionEvent.LOGIN:
+			printMessage("[" + se.getUserName() + "] requests login.\n");
+			if(confInfo.isLoginScheme())
+			{
+				// user authentication...
+				// CM DB must be used in the following authentication..
+				
+				String strQuery = "select * from user_table where userName='"+se.getUserName()
+						+"' and password=PASSWORD('"+se.getPassword()+"');";
+				System.out.println(strQuery);
+				boolean ret = CMDBManager.authenticateUser(se.getUserName(), se.getPassword(), 
+						stub.getCMInfo());
+				if(!ret)
+				{
+					printMessage("["+se.getUserName()+"] authentication fails!\n");
+					stub.replyEvent(cme, 0);
+				}
+				else
+				{
+					printMessage("["+se.getUserName()+"] authentication succeeded.\n");
+					stub.replyEvent(cme, 1);
+					
+				}
+				
+				
+			}
+						break;
+		case CMSessionEvent.LOGOUT:
+			printMessage("[" + se.getUserName() + "] logs out.\n");
+			break;
+			
+		case CMSessionEvent.REGISTER_USER:
+			printMessage("User registration requested by user[" + se.getUserName() + "].\n");
+			break;
+		default:
+			return;
+	}
+	
+}
+
+
+	private void printMessage(String strText) {
+		System.out.println("printMessage: " + strText);
+	}
 }

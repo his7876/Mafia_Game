@@ -164,19 +164,28 @@ public class ClientController {
        �쁽�옱 �꽭�뀡�뿉 議댁옱�븯�뒗 �궗�엺 由ъ뒪�듃 議고쉶 �븿�닔 
 
    *   Parameters : void
-   *   Return values : void
+   *   Return values : ArrayList
    * */
-	public void getSessionMember() {
+	public ArrayList getSessionMember() {
 		System.out.print("====== print group members\n");
 		CMMember groupMembers = clientStub.getGroupMembers();
+		CMUser myself = clientStub.getMyself();
+		System.out.print("My name: "+myself.getName()+"\n");
+		ArrayList memberList = new ArrayList();
 		if(groupMembers == null || groupMembers.isEmpty())
 		{
 			System.err.println("No group member yet!");
-			return;
+		
 		}
-		System.out.print(groupMembers.toString()+"\n");
+		System.out.print("그룹멤버출력:"+groupMembers.toString()+"\n");
+		String str =groupMembers.toString();
+		String[] member = str.split("\\s");
+		for(String m: member) {
+			memberList.add(m);
+			System.out.print("멤버: "+m+"\n" );
+		}
+		return memberList;
 	}
-	
 
 	
 	

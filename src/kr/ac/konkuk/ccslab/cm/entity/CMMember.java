@@ -337,8 +337,8 @@ public class CMMember extends CMObject{
 			return null;
 		
 		StringBuffer strBuf = new StringBuffer();
-		strBuf.append("session("+m_memberList.get(0).getCurrentSession()+"), group("
-				+m_memberList.get(0).getCurrentGroup()+")\n");
+	//	strBuf.append("session("+m_memberList.get(0).getCurrentSession()+"), group("
+	//			+m_memberList.get(0).getCurrentGroup()+")\n");
 		for(CMUser user : m_memberList)
 		{
 			strBuf.append(user.getName()+" ");
