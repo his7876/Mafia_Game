@@ -15,7 +15,7 @@ public class MainProcess {
 //        main.room_frame = new Room_Frame("adaf");
 //        main.room_frame.setMain(main);
 //      
-    	FrameController.getInstance().init_room_frame("aaa");
+  //  	FrameController.getInstance().init_room_frame("aaa");
     	FrameController.getInstance().room_frame.sendMsg("admin","day");
     	HashMap<String, Boolean>hm = new HashMap<>();
 		

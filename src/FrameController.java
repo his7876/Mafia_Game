@@ -1,3 +1,4 @@
+import kr.ac.konkuk.ccslab.cm.stub.CMClientStub;
 
 public class FrameController {
 	public Room_Frame room_frame;

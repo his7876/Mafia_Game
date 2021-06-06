@@ -27,7 +27,8 @@ class Choose_Dialog extends JDialog{
 	private Dimension frameSize, screenSize;
 	private JButton[] user_btn;
 	static int count = 1;
-	
+	public CMClientStub clientStub;
+	//이게 맞을까여,,,,,,,,?
 	public GameController gameController;
 	
 	public Choose_Dialog(JFrame frame, String title, HashMap<String, Boolean> user) {
@@ -118,7 +119,7 @@ public class Room_Frame extends JFrame{
 //    private HashMap<String, Boolean>hm = new HashMap<>();
 
     public GameController gameController;
-    private CMClientStub clientStub;
+    public CMClientStub clientStub;
     
     public Room_Frame(String user, CMClientStub stub) {
     	Username = user;
