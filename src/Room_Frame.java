@@ -32,7 +32,7 @@ class Choose_Dialog extends JDialog{
 	
 	public Choose_Dialog(JFrame frame, String title, HashMap<String, Boolean> user) {
 		super(frame, title);
-		gameController = new GameController();
+		gameController = new GameController(clientStub);
 		pnl = new JPanel();
 		pnl.setLayout(new GridLayout(2,4,5,5));
 		
@@ -113,16 +113,17 @@ public class Room_Frame extends JFrame{
     private JScrollPane scrollpane;
 	
     public String Username;
-
+    
     public Choose_Dialog dl;
 //    private HashMap<String, Boolean>hm = new HashMap<>();
 
     public GameController gameController;
-	
+    private CMClientStub clientStub;
     
-    public Room_Frame(String user) {
+    public Room_Frame(String user, CMClientStub stub) {
     	Username = user;
-    	gameController = new GameController();
+    	clientStub = stub;
+    	gameController = new GameController(clientStub);
     	Init();
     }
     

@@ -14,8 +14,8 @@ public class FrameController {
 		}
 		return f;
 	}
-	public void init_room_frame(String userName) {
-		room_frame = new Room_Frame(userName);
+	public void init_room_frame(String userName, CMClientStub stub) {
+		room_frame = new Room_Frame(userName, stub);
 	}
 	
 	public void init_main_frame(String userName , ClientController client) {

@@ -22,7 +22,7 @@ public class RoomController {
 	}
 	public void enterRoom(String userId, String roomId) {
 		UserController.getInstance().enterRoom(roomId);
-		FrameController.getInstance().init_room_frame(userId);
+		FrameController.getInstance().init_room_frame(userId,clientStub);
 	}
 	public void exitRoom() {
 		UserController.getInstance().exitRoom();

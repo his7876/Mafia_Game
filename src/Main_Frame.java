@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class Main_Frame extends JFrame{
 
@@ -73,7 +74,7 @@ public class Main_Frame extends JFrame{
     	
     	
     	
-    	ArrayList members = controller.getSessionMember();
+    	ArrayList<String> members = controller.getSessionMember();
     	
     	for(int i = 0; i < members.size(); i++) {
    		friend_model.addElement(members.get(i));

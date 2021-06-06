@@ -1,7 +1,7 @@
 
 import java.io.IOException;
 import java.util.Vector;
-
+import java.util.ArrayList;
 import kr.ac.konkuk.ccslab.cm.entity.CMMember;
 import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
@@ -166,12 +166,12 @@ public class ClientController {
    *   Parameters : void
    *   Return values : ArrayList
    * */
-	public ArrayList getSessionMember() {
+	public ArrayList<String> getSessionMember() {
 		System.out.print("====== print group members\n");
 		CMMember groupMembers = clientStub.getGroupMembers();
 		CMUser myself = clientStub.getMyself();
 		System.out.print("My name: "+myself.getName()+"\n");
-		ArrayList memberList = new ArrayList();
+		ArrayList<String> memberList = new ArrayList<String>();
 		if(groupMembers == null || groupMembers.isEmpty())
 		{
 			System.err.println("No group member yet!");
@@ -222,7 +222,7 @@ public class ClientController {
      
  *   Parameters : void
  *   Return values : void
- * */
+ * 
 	
 	public void SessionInfo()
 	{
@@ -236,7 +236,7 @@ public class ClientController {
 		System.out.println("======");
 	}
 	
-	
+*/
 	
 	
 	public static void main(String[] args) {	

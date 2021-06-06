@@ -69,8 +69,8 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 	public ClientControllerEventHandler(CMClientStub stub, ClientController client) {
 		m_clientStub = stub;
 		m_client = client;
-		gameController = new GameController(client);
-		roomController = new RoomController(client);
+		gameController = new GameController(stub);
+		roomController = new RoomController(stub);
 	}
 
 	@Override
