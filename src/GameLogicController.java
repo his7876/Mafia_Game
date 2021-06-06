@@ -77,7 +77,7 @@ public class GameLogicController implements Runnable{
 	private int gameExitStatus = -1; // 게임 종료 이유
 	private int roomid = 0;
 	
-	private static final int CHAT_VOTE_TIME = 60; // 초기 투표 시간
+	private static final int CHAT_VOTE_TIME = 20; // 초기 투표 시간
 	private static final int PROS_CONS_TIME = 20; // 찬반 투표 시간
 	private static final int NIGHT_JOB_TIME = 20; // 밤 시간에 각 직업이 선택하는 시간
 	
