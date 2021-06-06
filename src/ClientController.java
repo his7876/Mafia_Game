@@ -21,7 +21,8 @@ public class ClientController {
 		clientStub = new CMClientStub();
 		clientEventHandler = new ClientControllerEventHandler(clientStub,this);
 	
-		//CM 초기화 및 시작  
+		clientStub.setAppEventHandler(clientEventHandler);
+		//CM 珥덇린�솕 諛� �떆�옉  
 		m_bRun = clientStub.startCM(); 
 		if(!m_bRun) {
 
@@ -46,7 +47,7 @@ public class ClientController {
 	 /* Methods */
 
   /*  Functionality :
-      CM 종료 함수  
+      CM 醫낅즺 �븿�닔  
       
   *   Parameters : void
   *   Return values : void
@@ -55,14 +56,10 @@ public class ClientController {
 		clientStub.terminateCM();
 		m_bRun = false;
 	}
-	
-	
-	
-	
 	 /* Methods */
 
     /*  Functionality : 
-        로그인 함수
+        濡쒓렇�씤 �븿�닔
           
     *   Parameters : void
     *   Return values : void
@@ -107,8 +104,8 @@ public class ClientController {
 	 /* Methods */
 
    /*  Functionality :
-         회원 가입 함수
-         ID, PWD , 확인용 PWD 입력 받음 
+         �쉶�썝 媛��엯 �븿�닔
+         ID, PWD , �솗�씤�슜 PWD �엯�젰 諛쏆쓬 
          
          
    *   Parameters : void
@@ -143,7 +140,7 @@ public class ClientController {
 	 /* Methods */
 
   /*  Functionality :
-      로그아웃 함수
+      濡쒓렇�븘�썐 �븿�닔
   *   Parameters : void
   *   Return values : void
   * */
@@ -164,7 +161,7 @@ public class ClientController {
 	 /* Methods */
 
    /*  Functionality :
-       현재 세션에 존재하는 사람 리스트 조회 함수 
+       �쁽�옱 �꽭�뀡�뿉 議댁옱�븯�뒗 �궗�엺 由ъ뒪�듃 議고쉶 �븿�닔 
 
    *   Parameters : void
    *   Return values : void
@@ -187,7 +184,7 @@ public class ClientController {
 	 /* Methods */
 
   /*  Functionality :
-      DummyEvent 전송 함수
+      DummyEvent �쟾�넚 �븿�닔
       
       InfoType :  "opcode|roomID|userName|args" 
       
@@ -212,7 +209,7 @@ public class ClientController {
 	 /* Methods */
 
  /*  Functionality :
-     세션 정보 출력 함수
+     �꽭�뀡 �젙蹂� 異쒕젰 �븿�닔
      
  *   Parameters : void
  *   Return values : void
@@ -235,8 +232,8 @@ public class ClientController {
 	
 	public static void main(String[] args) {	
 		ClientController client = new ClientController();
-		client.clientStub.setAppEventHandler(client.clientEventHandler);
-		
+//		client.clientStub.setAppEventHandler(client.clientEventHandler);
+//		
 		Login_Frame login_frame = new Login_Frame(client);
 	
 				

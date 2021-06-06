@@ -22,13 +22,13 @@ public class RoomController {
 	}
 	public void enterRoom(String userId, String roomId) {
 		UserController.getInstance().enterRoom(roomId);
-		Room_Frame room_frame = new Room_Frame(userId);
+		FrameController.getInstance().init_room_frame(userId);
 	}
 	public void exitRoom() {
 		UserController.getInstance().exitRoom();
 	}
 	public void showUserList() {
-		getSessionMember();//session member 媛��졇���꽌 蹂댁뿬二쇨린
+		getSessionMember();//session member 揶쏉옙占쎌죬占쏙옙占쎄퐣 癰귣똻肉т틠�눊由�
 	}
 	
 	public void sendDummyEvent(String opcode, String msg) {

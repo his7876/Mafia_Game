@@ -61,6 +61,7 @@ public class Main_Frame extends JFrame{
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					
 				}
     			//main.showRoomFrame();
     		}
@@ -101,5 +102,9 @@ public class Main_Frame extends JFrame{
 //    public void setMain(MainProcess main) {
  //       this.main = main;
   //  }
+    
+    public void restart_main() {
+    	
+    }
     
 }

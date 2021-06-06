@@ -1,4 +1,6 @@
 
+import java.util.HashMap;
+
 import javax.swing.JFrame;
 
 public class MainProcess {
@@ -9,10 +11,25 @@ public class MainProcess {
     Room_Frame room_frame;
     String username;
     public static void main(String[] args){
-        MainProcess main = new MainProcess();
-        main.room_frame = new Room_Frame("adaf");
-        main.room_frame.setMain(main);
-      
+//        MainProcess main = new MainProcess();
+//        main.room_frame = new Room_Frame("adaf");
+//        main.room_frame.setMain(main);
+//      
+    	FrameController.getInstance().init_room_frame("aaa");
+    	FrameController.getInstance().room_frame.sendMsg("admin","day");
+    	HashMap<String, Boolean>hm = new HashMap<>();
+		
+		//獄쏆룇釉섓옙占�
+    	String parm = "jewin/udasdfa/adsfasdf";
+		String[] aliveUserList = parm.split("/");
+		//ui
+		
+		for(int i = 0; i < aliveUserList.length; i++) {
+			hm.put(aliveUserList[i], true);
+		}
+		FrameController.getInstance().room_frame.dl = new Choose_Dialog(FrameController.getInstance().room_frame, "Vote", hm);
+		FrameController.getInstance().room_frame.sendMsg("adfaf", "choose");
+    	 
         //main.login_frame = new Login_Frame();
         //main.login_frame.setMain(main);
 //        main.room_frame = new Room_Frame();
