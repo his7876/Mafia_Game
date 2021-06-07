@@ -69,8 +69,8 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 	public ClientControllerEventHandler(CMClientStub stub, ClientController client) {
 		m_clientStub = stub;
 		m_client = client;
-		gameController = new GameController(stub);
-		roomController = new RoomController(stub);
+		gameController = new GameController();
+		roomController = new RoomController();
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 		CMDummyEvent due = (CMDummyEvent) cme;
 		String msg = due.getDummyInfo();
 		System.out.println("total message for sender : " + msg);
-		String[] arrMsg = msg.split("|");
+		String[] arrMsg = msg.split("\\|");
 		String opcode = arrMsg[0];
 		String roomId = arrMsg[1];
 		String userName = arrMsg[2];

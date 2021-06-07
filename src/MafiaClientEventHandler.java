@@ -27,7 +27,7 @@ public class MafiaClientEventHandler  implements CMAppEventHandler {
 		{
 		case CMInfo.CM_DUMMY_EVENT:
 			msg.fromString(((CMDummyEvent)cme).getDummyInfo());
-			System.out.println("[Å¬¶óÀÌ¾ğÆ®] ¹ŞÀº ÀÌº¥Æ® : " + GameCMConnector.OPCODE_INFO[msg.opcode] + ", ÀÎÀÚ : " + msg.args);
+			System.out.println("[í´ë¼ì´ì–¸íŠ¸] ë°›ì€ ì´ë²¤íŠ¸ : " + GameCMConnector.OPCODE_INFO[msg.opcode] + ", ì¸ì : " + msg.args);
 			break;
 		default:
 			return;

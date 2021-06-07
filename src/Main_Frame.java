@@ -6,7 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
-import java.util.ArrayList;
 
 public class Main_Frame extends JFrame{
 
@@ -14,8 +13,8 @@ public class Main_Frame extends JFrame{
 	private Dimension frameSize, screenSize;
 	ClientController controller;
 	private JLabel label;
-    private JList Friends_List;
-    private DefaultListModel friend_model;
+    public JList Friends_List;
+    public DefaultListModel friend_model;
     private JScrollPane scrollpane1;
     private JScrollPane scrollpane2;
     private JLabel User_Info_Text;
@@ -29,7 +28,7 @@ public class Main_Frame extends JFrame{
     public Main_Frame(String user, ClientController controller) {
     	this.controller = controller;
     	Username = user;
-    	roomController = new RoomController(controller.getClientStub());
+    	roomController = new RoomController();
     	Init();
     }
     
@@ -45,6 +44,9 @@ public class Main_Frame extends JFrame{
         
         add(pnl);
         setVisible(true);
+        
+        Friends_List = new JList(new DefaultListModel());
+    	friend_model = (DefaultListModel)Friends_List.getModel();
     }
     
     private void setDisplay(JPanel pnl) {
@@ -68,17 +70,19 @@ public class Main_Frame extends JFrame{
     		}
     	});
     
-
-    	Friends_List = new JList(new DefaultListModel());
-    	friend_model = (DefaultListModel)Friends_List.getModel();
+//
+//    	Friends_List = new JList(new DefaultListModel());
+//    	friend_model = (DefaultListModel)Friends_List.getModel();
     	
-    	
-    	
-    	ArrayList<String> members = controller.getSessionMember();
-    	
-    	for(int i = 0; i < members.size(); i++) {
-   		friend_model.addElement(members.get(i));
-    	}
+    	controller.getSessionMember();
+////    	
+//    	String members = controller.getSessionMember();
+//    	String[] memberList = members.split(" ");
+//    	
+//    	for(int i = 0; i < memberList.length; i++) {
+//    		friend_model.addElement(memberList[i]);
+//    	}
+//    	
     	scrollpane2 = new JScrollPane(Friends_List);
     	scrollpane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	

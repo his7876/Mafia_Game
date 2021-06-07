@@ -27,13 +27,12 @@ class Choose_Dialog extends JDialog{
 	private Dimension frameSize, screenSize;
 	private JButton[] user_btn;
 	static int count = 1;
-	public CMClientStub clientStub;
-	//이게 맞을까여,,,,,,,,?
+	
 	public GameController gameController;
 	
 	public Choose_Dialog(JFrame frame, String title, HashMap<String, Boolean> user) {
 		super(frame, title);
-		gameController = new GameController(clientStub);
+		gameController = new GameController();
 		pnl = new JPanel();
 		pnl.setLayout(new GridLayout(2,4,5,5));
 		
@@ -56,7 +55,7 @@ class Choose_Dialog extends JDialog{
 			Timer timer = new Timer();
 			TimerTask task = new TimerTask() {
 				public void run() {
-					if(count <= 10){ //count값이 60보다 작거나 같을때까지 수행
+					if(count <= 30){ //count값이 30보다 작거나 같을때까지 수행
 						System.out.println("[카운트다운 : "+count+"]");
 						count++; //실행횟수 증가 
 					}
@@ -114,18 +113,17 @@ public class Room_Frame extends JFrame{
     private JScrollPane scrollpane;
 	
     public String Username;
-    
+
     public Choose_Dialog dl;
 //    private HashMap<String, Boolean>hm = new HashMap<>();
 
     public GameController gameController;
-    public CMClientStub clientStub;
+	
     
-    public Room_Frame(String user, CMClientStub stub) {
+    public Room_Frame(String user) {
     	Username = user;
-    	clientStub = stub;
-    	gameController = new GameController(clientStub);
     	Init();
+    	gameController = new GameController();
     }
     
     private void Init() {
@@ -153,7 +151,7 @@ public class Room_Frame extends JFrame{
     	scrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	
     	//Clock_Label = new JLabel("100�룯占�");
-    	Clock_Label.setForeground(Color.red);
+//    	Clock_Label.setForeground(Color.red);
     	
     	daynightchange(true);
 //    	
@@ -206,13 +204,13 @@ public class Room_Frame extends JFrame{
     	});
     	
     	scrollpane.setBounds(5,5,300,300);
-    	Clock_Label.setBounds(135,310,300,25);
+//    	Clock_Label.setBounds(135,310,300,25);
     	Msg_Textbox.setBounds(5,340,220,25);
     	Msg_Send_Button.setBounds(225, 340, 80, 25);
 
     	
     	pnl.add(scrollpane);
-    	pnl.add(Clock_Label);
+//    	pnl.add(Clock_Label);
     	pnl.add(Msg_Textbox);
     	pnl.add(Msg_Send_Button);
     	

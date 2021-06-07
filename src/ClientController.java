@@ -1,7 +1,7 @@
 
 import java.io.IOException;
 import java.util.Vector;
-import java.util.ArrayList;
+
 import kr.ac.konkuk.ccslab.cm.entity.CMMember;
 import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
@@ -9,7 +9,7 @@ import kr.ac.konkuk.ccslab.cm.stub.CMClientStub;
 
 public class ClientController {
 	
-	private CMClientStub clientStub;
+//	private CMClientStub clientStub;
 	private ClientControllerEventHandler clientEventHandler;
 	
 	private boolean m_bRun;
@@ -18,12 +18,12 @@ public class ClientController {
 	// UserController uc;
 			
 	public ClientController() {
-		clientStub = new CMClientStub();
-		clientEventHandler = new ClientControllerEventHandler(clientStub,this);
+//		clientStub = new CMClientStub();
+		clientEventHandler = new ClientControllerEventHandler(CMClientStub.getInstance(),this);
 	
-		clientStub.setAppEventHandler(clientEventHandler);
+		CMClientStub.getInstance().setAppEventHandler(clientEventHandler);
 		//CM 珥덇린�솕 諛� �떆�옉  
-		m_bRun = clientStub.startCM(); 
+		m_bRun = CMClientStub.getInstance().startCM(); 
 		if(!m_bRun) {
 
 			System.err.println("CM initialization error!");
@@ -35,7 +35,7 @@ public class ClientController {
 	}
 	
 	public CMClientStub getClientStub() {
-		return clientStub;
+		return CMClientStub.getInstance();
 	}
 	
 	public ClientControllerEventHandler getClientEventHandler() {
@@ -53,7 +53,7 @@ public class ClientController {
   *   Return values : void
   * */
 	public void terminateCM() {
-		clientStub.terminateCM();
+		CMClientStub.getInstance().terminateCM();
 		m_bRun = false;
 	}
 	 /* Methods */
@@ -83,7 +83,7 @@ public class ClientController {
 		
 		
 		
-		bRequestResult = clientStub.loginCM(strUserID, strPassword);
+		bRequestResult = CMClientStub.getInstance().loginCM(strUserID, strPassword);
 			
 		if(bRequestResult) {
 			System.out.println("successfully sent the login request.");
@@ -132,7 +132,7 @@ public class ClientController {
 			return;
 		}
 		
-		clientStub.registerUser(strUserID, strPassword);
+		CMClientStub.getInstance().registerUser(strUserID, strPassword);
 		
 }
 
@@ -148,7 +148,7 @@ public class ClientController {
 		
 		boolean bRequestResult = false;
 		System.out.println("====== logout from default server");
-		bRequestResult = clientStub.logoutCM();
+		bRequestResult = CMClientStub.getInstance().logoutCM();
 		if(bRequestResult)
 			System.out.println("successfully sent the logout request.");
 		else
@@ -164,28 +164,32 @@ public class ClientController {
        �쁽�옱 �꽭�뀡�뿉 議댁옱�븯�뒗 �궗�엺 由ъ뒪�듃 議고쉶 �븿�닔 
 
    *   Parameters : void
-   *   Return values : ArrayList
+   *   Return values : void
    * */
-	public ArrayList<String> getSessionMember() {
+	public void getSessionMember() {
 		System.out.print("====== print group members\n");
-		CMMember groupMembers = clientStub.getGroupMembers();
-		CMUser myself = clientStub.getMyself();
-		System.out.print("My name: "+myself.getName()+"\n");
-		ArrayList<String> memberList = new ArrayList<String>();
+		CMMember groupMembers = CMClientStub.getInstance().getGroupMembers();
 		if(groupMembers == null || groupMembers.isEmpty())
 		{
 			System.err.println("No group member yet!");
+			return;
+		}
+		System.out.print(groupMembers+"\n");
 		
-		}
-		System.out.print("그룹멤버출력:"+groupMembers.toString()+"\n");
-		String str =groupMembers.toString();
-		String[] member = str.split("\\s");
-		for(String m: member) {
-			memberList.add(m);
-			System.out.print("멤버: "+m+"\n" );
-		}
-		return memberList;
+//		System.out.print(groupMembers.toString()+"\n");
+		String member = groupMembers.toString();
+		
+		String[] mem = member.split(" ");
+		System.out.println("mem 0 : " + mem[0]);
+		System.out.println("mem 1 : " + mem[1]);
+    	String[] memberList = mem[1].split(" ");
+
+    	for(int i = 0; i < memberList.length-1; i++) {
+    		FrameController.getInstance().main_frame.friend_model.addElement(memberList[i]);
+    	}
+
 	}
+	
 
 	
 	
@@ -206,9 +210,9 @@ public class ClientController {
 	public void sendDummyEvent(String opcode, String msg) {
 		System.out.println("====== DummyEvent send to default server");
 		CMDummyEvent due = new CMDummyEvent();
-		due.setSender(clientStub.getCMInfo().getInteractionInfo().getMyself().getName());
+		due.setSender(CMClientStub.getInstance().getCMInfo().getInteractionInfo().getMyself().getName());
 		due.setDummyInfo(opcode+"|"+msg);
-		clientStub.send(due, "SERVER");
+		CMClientStub.getInstance().send(due, "SERVER");
 		System.out.println(due.getDummyInfo());
 	}
 
@@ -222,13 +226,13 @@ public class ClientController {
      
  *   Parameters : void
  *   Return values : void
- * 
+ * */
 	
 	public void SessionInfo()
 	{
 		boolean bRequestResult = false;
 		System.out.println("====== request session info from default server");
-		bRequestResult = clientStub.requestSessionInfo();
+		bRequestResult = CMClientStub.getInstance().requestSessionInfo();
 		if(bRequestResult)
 			System.out.println("successfully sent the session-info request.");
 		else
@@ -236,7 +240,7 @@ public class ClientController {
 		System.out.println("======");
 	}
 	
-*/
+	
 	
 	
 	public static void main(String[] args) {	

@@ -11,20 +11,20 @@ import java.util.List;
 public class GameController extends Thread{
 	static int count = 1;
 	private int day = 0;// 낮 - 0, 밤 - 1
-	CMClientStub clientStub;
+//	CMClientStub clientStub;
 //	private ClientController clientController;
 //	private ClientControllerEventHandler clientHandler = new ClientControllerEventHandler( , clientController);// stub 占쎈퓠 �맱占� ?
 
-	public GameController(CMClientStub clientStub) {
-		this.clientStub = clientStub;
+	public GameController() {
+		
 	}
 	
 	public void sendDummyEvent(String opcode, String msg) {
 		System.out.println("====== DummyEvent send to default server");
 		CMDummyEvent due = new CMDummyEvent();
-		due.setSender(clientStub.getCMInfo().getInteractionInfo().getMyself().getName());
+		due.setSender(CMClientStub.getInstance().getCMInfo().getInteractionInfo().getMyself().getName());
 		due.setDummyInfo(opcode+"|"+msg);
-		clientStub.send(due, "SERVER");
+		CMClientStub.getInstance().send(due, "SERVER");
 		System.out.println(due.getDummyInfo());
 	}
 	
