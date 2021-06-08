@@ -199,6 +199,21 @@ public class GameCMConnector {
 		sendToAll(event);
 	}
 	
+	
+	public void broadcastDiscussionStart(boolean enable) {
+		UserGameEventInfo event = new UserGameEventInfo();
+		event.args = "null";
+		if(enable) {
+			event.opcode = 27; // 시작
+		}else {
+			event.opcode = 28; // 종료
+		}
+		event.roomID = -1;
+		event.userName = "Server";
+		sendToAll(event);
+	}
+	
+	
 	public void markUser(int id, boolean enable) {
 		markers[id] = enable;
 	}
