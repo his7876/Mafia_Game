@@ -30,7 +30,7 @@ public class GameSessionHandler {
 			room = userRoomTable.get(msg.cme.getSender());
 		}
 		
-		ServerLogger.printLog("[Ε¬¶σΐΜΎπΖ® -> Ό­Ήφ] ΊΈ³½ Ε¬¶σΐΜΎπΖ® : " + msg.userName + ", ΊΈ³½ ΐΜΊ¥Ζ® : " + GameCMConnector.OPCODE_INFO[msg.opcode] + ", Ήί»ύΗΡ Ήζ : " + room );
+		ServerLogger.printLog("[ν΄λΌμ΄μ–ΈνΈ -> μ„λ²„] λ³΄λ‚Έ ν΄λΌμ΄μ–ΈνΈ : " + msg.userName + ", λ³΄λ‚Έ μ΄λ²¤νΈ : " + GameCMConnector.OPCODE_INFO[msg.opcode] + ", λ°μƒν• λ°© : " + room );
 		
 		switch(msg.opcode) {
 		case 2:

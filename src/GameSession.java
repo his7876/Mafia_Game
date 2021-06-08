@@ -55,7 +55,7 @@ public class GameSession{
 	public boolean tryAddUser(String user) {
 		if(canAddUser()) {
 			connector.tryAddUser(user);
-			ServerLogger.printLog("[¹æ :" + roomID + "] À¯Àú Âü¿©ÇÔ : " + ", ÇöÀç ÀÎ¿ø¼ö : " + connector.currentUsers.size());
+			ServerLogger.printLog("[ë°© :" + roomID + "] ìœ ì € ì°¸ì—¬í•¨ : " + ", í˜„ì¬ ì¸ì›ìˆ˜ : " + connector.currentUsers.size());
 			if(connector.currentUsers.size() == 5) {
 				gameLogic = new GameLogicController(connector,new GameSessionCallback() {					
 					@Override
@@ -67,7 +67,7 @@ public class GameSession{
 				}, roomID);
 				thread = new Thread(gameLogic);
 				thread.start();
-				ServerLogger.printLog("[¹æ :" + roomID + "] : °ÔÀÓ ½ÃÀÛ Á¶°Ç ´Ş¼º, °ÔÀÓ ½ÃÀÛ" );
+				ServerLogger.printLog("[ë°© :" + roomID + "] : ê²Œì„ ì‹œì‘ ì¡°ê±´ ë‹¬ì„±, ê²Œì„ ì‹œì‘" );
 			}
 		}
 		return false;

@@ -13,8 +13,8 @@ public class Main_Frame extends JFrame{
 	private Dimension frameSize, screenSize;
 	ClientController controller;
 	private JLabel label;
-    private JList Friends_List;
-    private DefaultListModel friend_model;
+    public JList Friends_List;
+    public DefaultListModel friend_model;
     private JScrollPane scrollpane1;
     private JScrollPane scrollpane2;
     private JLabel User_Info_Text;
@@ -44,6 +44,9 @@ public class Main_Frame extends JFrame{
         
         add(pnl);
         setVisible(true);
+        
+        Friends_List = new JList(new DefaultListModel());
+    	friend_model = (DefaultListModel)Friends_List.getModel();
     }
     
     private void setDisplay(JPanel pnl) {
@@ -61,22 +64,25 @@ public class Main_Frame extends JFrame{
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					
 				}
     			//main.showRoomFrame();
     		}
     	});
     
-
-    	Friends_List = new JList(new DefaultListModel());
-    	friend_model = (DefaultListModel)Friends_List.getModel();
+//
+//    	Friends_List = new JList(new DefaultListModel());
+//    	friend_model = (DefaultListModel)Friends_List.getModel();
     	
     	controller.getSessionMember();
+////    	
+//    	String members = controller.getSessionMember();
+//    	String[] memberList = members.split(" ");
 //    	
-//    	Vector<String> members = controller.getSessionMember();
-//    	
-//    	for(int i = 0; i < members.size(); i++) {
-//    		friend_model.addElement(members.get(i));
+//    	for(int i = 0; i < memberList.length; i++) {
+//    		friend_model.addElement(memberList[i]);
 //    	}
+//    	
     	scrollpane2 = new JScrollPane(Friends_List);
     	scrollpane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	
@@ -101,5 +107,9 @@ public class Main_Frame extends JFrame{
 //    public void setMain(MainProcess main) {
  //       this.main = main;
   //  }
+    
+    public void restart_main() {
+    	
+    }
     
 }

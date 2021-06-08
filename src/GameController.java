@@ -5,25 +5,26 @@ import kr.ac.konkuk.ccslab.cm.stub.*;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameController extends Thread{
 	static int count = 1;
-	private int day = 0;// �궙 - 0, 諛� - 1
-	CMClientStub clientStub;
+	private int day = 0;// 낮 - 0, 밤 - 1
+//	CMClientStub clientStub;
 //	private ClientController clientController;
-//	private ClientControllerEventHandler clientHandler = new ClientControllerEventHandler( , clientController);// stub �뿉 萸� ?
+//	private ClientControllerEventHandler clientHandler = new ClientControllerEventHandler( , clientController);// stub 占쎈퓠 �맱占� ?
 
 	public GameController() {
-		clientStub = new CMClientStub();
+		
 	}
 	
 	public void sendDummyEvent(String opcode, String msg) {
 		System.out.println("====== DummyEvent send to default server");
 		CMDummyEvent due = new CMDummyEvent();
-		due.setSender(clientStub.getCMInfo().getInteractionInfo().getMyself().getName());
+		due.setSender(CMClientStub.getInstance().getCMInfo().getInteractionInfo().getMyself().getName());
 		due.setDummyInfo(opcode+"|"+msg);
-		clientStub.send(due, "SERVER");
+		CMClientStub.getInstance().send(due, "SERVER");
 		System.out.println(due.getDummyInfo());
 	}
 	
@@ -32,6 +33,12 @@ public class GameController extends Thread{
 	}
 	public void setDay(int day) {
 		this.day = day;
+		if(day == 0) {
+			FrameController.getInstance().room_frame.sendMsg("admin","day");
+		}
+		else {
+			FrameController.getInstance().room_frame.sendMsg("admin", "night");
+		}	
 	}
 	
 	public String makeMsg(String args) {
@@ -39,61 +46,88 @@ public class GameController extends Thread{
 	}
 	
 	//GameStart
-	//assign Job..
-	//opcode 1濡� 諛쏆븘�삩 param string�쑝濡� 吏곸뾽�쓣 set�빐 (server -> client)
+		//assign Job..
+		//opcode 1로 받아온 param string으로 직업을 set해 (server -> client)
+		
+		//opcode 22 아침 (server -> client)
+		//반복
+		//opcode 3 토론 시작.. (상호작용 )
+		//opcode 9 투표 시작.. (sever ->client) // opcode2 투표 누구할지 (client -> server) // 투표시 아무도 선택 안하는 경
+		//opcode 10 투표 종료 (server -> client)
+		//opcode 21 투표에서 표를 가장 많이 받은 사람 (server->client)
+		//opcode 14(찬) 15(반) 찬반투표 시작.. (client -> server)
+		//opcode 8 사망자가 있었을때 사망자를 알리는 통신 (Server-> client)
+		//opcode 23 밤 (server -> client)
+		//opcode 24 마피아 살인  -> opcode 2 누구 죽일지 선택 (client -> server)
+		//opcode 25 경찰 확인 -> opcode 2  누구 볼지 (client -> server)
+		//opcode 26 의사 누구 살릴지 -> opcode2 누구 살릴지 (client -> server)
+		//아침
+		//opcode 8 밤에 사망자가 있으면 알리는 통신 .. 없으면 없다고 말해
+		// if 승리를 했다면 승리를 알리는 통신 opcode 11 시민 승리 opcode 12 마피아 승리  opcode 13 게임진행불
+				//게임 종료 시 opcode 16
 	
-	//opcode 22 �븘移� (server -> client)
-	//諛섎났
-	//opcode 3 �넗濡� �떆�옉.. (�긽�샇�옉�슜 )
-	//opcode 9 �닾�몴 �떆�옉.. (sever ->client) // opcode2 �닾�몴 �늻援ы븷吏� (client -> server) // �닾�몴�떆 �븘臾대룄 �꽑�깮 �븞�븯�뒗 寃�
-	//opcode 10 �닾�몴 醫낅즺 (server -> client)
-	//opcode 21 �닾�몴�뿉�꽌 �몴瑜� 媛��옣 留롮씠 諛쏆� �궗�엺 (server->client)
-	//opcode 14(李�) 15(諛�) 李щ컲�닾�몴 �떆�옉.. (client -> server)
-	//opcode 8 �궗留앹옄媛� �엳�뿀�쓣�븣 �궗留앹옄瑜� �븣由щ뒗 �넻�떊 (Server-> client)
-	//opcode 23 諛� (server -> client)
-	//opcode 24 留덊뵾�븘 �궡�씤  -> opcode 2 �늻援� 二쎌씪吏� �꽑�깮 (client -> server)
-	//opcode 25 寃쎌같 �솗�씤 -> opcode 2  �늻援� 蹂쇱� (client -> server)
-	//opcode 26 �쓽�궗 �늻援� �궡由댁� -> opcode2 �늻援� �궡由댁� (client -> server)
-	//�븘移�
-	//opcode 8 諛ㅼ뿉 �궗留앹옄媛� �엳�쑝硫� �븣由щ뒗 �넻�떊 .. �뾾�쑝硫� �뾾�떎怨� 留먰빐
-	// if �듅由щ�� �뻽�떎硫� �듅由щ�� �븣由щ뒗 �넻�떊 opcode 11 �떆誘� �듅由� opcode 12 留덊뵾�븘 �듅由�  opcode 13 寃뚯엫吏꾪뻾遺�
-			//寃뚯엫 醫낅즺 �떆 opcode 16
-	
-	public void gameStart() {// 諛⑹뿉 �궗�엺 �떎 �뱾�뼱�삤硫� -> �꽌踰꾩뿉�꽌�뒗 �떆�옉 議곌굔�씠 �셿猷뚮맂嫄� �븣�젮二쇰㈃ �겢�씪�씠�뼵�듃�뿉�꽌 5珥� 
+	public void gameStart() {
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
 			public void run() {
-				if(count <= 5){ //count媛믪씠 5蹂대떎 �옉嫄곕굹 媛숈쓣�븣源뚯� �닔�뻾
-					System.out.println("[移댁슫�듃�떎�슫 : "+count+"]");
-					count++; //�떎�뻾�슏�닔 利앷� 
+				if(count <= 5){ //count값이 5보다 작거나 같을때까지 수행
+					System.out.println("[카운트다운 : "+count+"]");
+					count++; //실행횟수 증가 
 				}
 				else{
-					timer.cancel(); //���씠癒� 醫낅즺
+					timer.cancel(); //타이머 종료
 					count = 1;
-					System.out.println("[移댁슫�듃�떎�슫 : 醫낅즺]");
+					System.out.println("[카운트다운 : 종료]");
 				}
 			}
 		};
-		timer.schedule(task, 1000, 1000);//task �떎�뻾 , 1珥덈쭏�떎 諛섎났
-	//諛⑹뿉�꽌 �씤�썝�씠 苑� 李쇰떎怨� 諛쏆븘�삤湲�
-	//-> 洹몃븣遺��꽣 移댁슫�듃 (移댁슫�듃瑜� �꽌踰꾩뿉�꽌 �븷吏� �겢�씪�씠�뼵�듃�뿉�꽌 �븷吏�)
-	//寃뚯엫�떆�옉 -> opcode 0
+		timer.schedule(task, 1000, 1000);//task 실행 , 1초마다 반복
+	//방에서 인원이 꽉 찼다고 받아오기
+	//-> 그때부터 카운트 (카운트를 서버에서 할지 클라이언트에서 할지)
+	//게임시작 -> opcode 0
 	}
+	
 	
 	public void setUserRole(String parm) {
 		UserController.getInstance().setUserRole(parm);
 	}
 	
 	public void voteUser(String parm) {
-		//諛쏆븘��
+		HashMap<String, Boolean>hm = new HashMap<>();
+		
+		//獄쏆룇釉섓옙占�
 		String[] aliveUserList = parm.split("/");
 		//ui
-		// String selectUser �꽑�깮 諛쏆�嫄� 媛��졇���꽌
-		String selectUser = " ";// �꽑�깮諛쏆�id
+		
+		for(int i = 0; i < aliveUserList.length; i++) {
+			hm.put(aliveUserList[i], true);
+		}
+		FrameController.getInstance().room_frame.dl = new Choose_Dialog(FrameController.getInstance().room_frame, "Vote", hm);
+		
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				if(count <= 60){ //count값이 60보다 작거나 같을때까지 수행
+					System.out.println("[카운트다운 : "+count+"]");
+					count++; //실행횟수 증가 
+				}
+				else{
+					timer.cancel(); //타이머 종료
+					count = 1;
+					System.out.println("[카운트다운 : 종료]");
+				}
+			}
+		};
+		timer.schedule(task, 1000, 1000);//task 실행 , 1초마다 반복
+//	//방에서 인원이 꽉 찼다고 받아오기
+//	//-> 그때부터 카운트 (카운트를 서버에서 할지 클라이언트에서 할지)
+//	//게임시작 -> opcode 0
+		// String selectUser 占쎄퐨占쎄문 獄쏆룇占썲쳞占� 揶쏉옙占쎌죬占쏙옙占쎄퐣
+		String selectUser = " ";// 占쎄퐨占쎄문獄쏆룇占퐄d
 		String msg = makeMsg(selectUser);
 		sendDummyEvent("2", msg);
 	}
-	//李쎌쓣 �쓣�슦�뒗 �븿�닔瑜� 留뚮뱾怨� �쓣�뼱吏� 李쎌쓣 �뼱�뼸寃� �떕�븘..
+	//筌≪럩�뱽 占쎌뱽占쎌뒭占쎈뮉 占쎈맙占쎈땾�몴占� 筌띾슢諭얏�⑨옙 占쎌뱽占쎈선筌욑옙 筌≪럩�뱽 占쎈선占쎈섯野껓옙 占쎈뼍占쎈툡..
 	public void showMostSelectedUser(String userid) {
 		//
 	}
@@ -101,9 +135,9 @@ public class GameController extends Thread{
 	public void chatPermit() {
 		
 	}
-	
+	/*
 	public void voteProsCons() {
-		int num = 0;//李щ컲 �꽑�깮 �뿬湲곗뿉 ���옣 
+		int num = 0;//筌⊥됱뺘 占쎄퐨占쎄문 占쎈연疫꿸퀣肉� 占쏙옙占쎌삢 
 		String msg = makeMsg("");
 		if(num == 0) {
 			sendDummyEvent("6", msg);
@@ -112,43 +146,131 @@ public class GameController extends Thread{
 			sendDummyEvent("7", msg);
 		}
 	}
-	
+	*/
 	public void broadcastDeadUser(String userId) {
 		if(userId == UserController.getInstance().getId()) {
 			UserController.getInstance().setIsDead("0");
-		}
-		//二쎌뿀�떎 ui show
-	}
-	
-	
-	public void mafiaTurn(String userId) {
-		if(userId != UserController.getInstance().getId()) {
-			//留덊뵾�븘 �븘�땶 �쑀���븳�뀒 ui 泥섎━ 
+			FrameController.getInstance().room_frame.sendMsg("Host", userId+" is Dead");
 		}
 		else {
+			FrameController.getInstance().room_frame.sendMsg("Host", userId+" is Dead");
+		}
+		//죽으면 채팅창에 show
+	}
+	
+	
+	public void mafiaTurn(String parm) {
+		if(UserController.getInstance().getUserRole() == "2") {
+			HashMap<String, Boolean>hm = new HashMap<>();
 			
+			//MAFIA 죽일사람 리스트
+			String[] aliveUserList = parm.split("/");
+			//ui
+			
+			for(int i = 0; i < aliveUserList.length; i++) {
+				hm.put(aliveUserList[i], true);
+			}
+			FrameController.getInstance().room_frame.dl = new Choose_Dialog(FrameController.getInstance().room_frame, "Vote", hm);
+			
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				public void run() {
+					if(count <= 60){ //count값이 60보다 작거나 같을때까지 수행
+						System.out.println("[카운트다운 : "+count+"]");
+						count++; //실행횟수 증가 
+					}
+					else{
+						timer.cancel(); //타이머 종료
+						count = 1;
+						System.out.println("[카운트다운 : 종료]");
+					}
+				}
+			};
+			timer.schedule(task, 1000, 1000);//task 실행 , 1초마다 반복
 		}
 	}
 	
-	public void policeTurn(String userId) {
-		if(userId != UserController.getInstance().getId()) {
-			//寃쎌같 �븘�땶 �쑀���븳�뀒 ui泥�
+	public void policeTurn(String parm) {
+		//경찰일때
+		if(UserController.getInstance().getUserRole() == "3") {
+			HashMap<String, Boolean>hm = new HashMap<>();
+			
+			//경찰 볼사람 리스트
+			String[] aliveUserList = parm.split("/");
+			//ui
+			
+			for(int i = 0; i < aliveUserList.length; i++) {
+				hm.put(aliveUserList[i], true);
+			}
+			FrameController.getInstance().room_frame.dl = new Choose_Dialog(FrameController.getInstance().room_frame, "Vote", hm);
+			
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				public void run() {
+					if(count <= 20){ //count값이 60보다 작거나 같을때까지 수행
+						System.out.println("[카운트다운 : "+count+"]");
+						count++; //실행횟수 증가 
+					}
+					else{
+						timer.cancel(); //타이머 종료
+						count = 1;
+						System.out.println("[카운트다운 : 종료]");
+					}
+				}
+			};
+			timer.schedule(task, 1000, 1000);//task 실행 , 1초마다 반복
 		}
 	}
 	
-	public void doctorTurn(String userId) {
-		if(userId != UserController.getInstance().getId()) {
-			//�쓽�궗 �븘�땶 �쑀���븳�뀒 ui泥�
+	public void doctorTurn(String parm) {
+		if(UserController.getInstance().getUserRole() == "4") {
+			HashMap<String, Boolean>hm = new HashMap<>();
+			
+			//의사 살릴사람 리스트
+			String[] aliveUserList = parm.split("/");
+			//ui
+			
+			for(int i = 0; i < aliveUserList.length; i++) {
+				hm.put(aliveUserList[i], true);
+			}
+			FrameController.getInstance().room_frame.dl = new Choose_Dialog(FrameController.getInstance().room_frame, "Vote", hm);
+			
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				public void run() {
+					if(count <= 20){ //count값이 60보다 작거나 같을때까지 수행
+						System.out.println("[카운트다운 : "+count+"]");
+						count++; //실행횟수 증가 
+					}
+					else{
+						timer.cancel(); //타이머 종료
+						count = 1;
+						System.out.println("[카운트다운 : 종료]");
+					}
+				}
+			};
+			timer.schedule(task, 1000, 1000);//task 실행 , 1초마다 반복
 		}
 	}
 	
 	public void mafiaWin() {
-		//ui 泥섎━
+		if(UserController.getInstance().getUserRole() == "2") {
+			FrameController.getInstance().room_frame.victory();
+		}
+		else {
+			FrameController.getInstance().room_frame.defeat();
+		}
+		
 		UserController.getInstance().exitRoom();
 	}
 	
 	public void citizenWin() {
-		//ui 泥섎━
+		if(UserController.getInstance().getUserRole() != "2") {
+			FrameController.getInstance().room_frame.victory();
+		}
+		else {
+			FrameController.getInstance().room_frame.defeat();
+		}
 		UserController.getInstance().exitRoom();
 	}
 

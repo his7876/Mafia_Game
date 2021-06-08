@@ -3,7 +3,7 @@ public class UserController{
 	private String id;
 	private String password;
 	private String userRole;
-	private String roomNum;
+	private String roomNum = "0";
 	private String isDead;
 	
 	public UserController() {

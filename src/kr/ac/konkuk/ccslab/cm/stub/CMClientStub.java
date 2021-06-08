@@ -60,11 +60,17 @@ public class CMClientStub extends CMStub {
 	 * 
 	 * <p> This method just called the default constructor of the super class, CMStub. 
 	 */
-	public CMClientStub()
-	{
+	public CMClientStub(){
 		super();
 	}
-
+	private static CMClientStub c = null;
+	
+	public static CMClientStub getInstance() {
+		if (c == null) {
+			c = new CMClientStub();
+		}
+		return c;
+	}
 	/**
 	 * Sets the default file path for file transfer.
 	 * <br> This method updates the transfered-file path information in CM and the FILE_PATH field in 

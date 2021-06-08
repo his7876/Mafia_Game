@@ -18,67 +18,64 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 	//Dummy info type 
 	public class DummyType{
 		
-		//0. 寃뚯엫 �떆�옉 
+		//0. 野껊슣�뿫 占쎈뻻占쎌삂 
 		public static final String opcode0 = "0";
-		//1. 吏곸뾽 愿��젴 
+		// 1. 筌욊낯毓� �꽴占쏙옙�졃
 		public static final String opcode1 = "1";
-		//2. �쑀�� �꽑�깮
+		// 2. 占쎌�占쏙옙 占쎄퐨占쎄문
 		public static final String opcode2 = "2";
-		//3. 梨꾪똿 �넚�닔�떊
+		// 3. 筌�袁る샒 占쎈꽊占쎈땾占쎈뻿
 		public static final String opcode3 = "3";
-		//4-5. 梨꾪똿 �뿀媛� 
-		public static final String opcode4 = "4";		 
-		public static final String opcode5 = "5";	
-		//6-7 李щ컲 �꽑�깮
+		// 4-5. 筌�袁る샒 占쎈�揶쏉옙
+		public static final String opcode4 = "4";
+		public static final String opcode5 = "5";
+		// 6-7 筌⊥됱뺘 占쎄퐨占쎄문
 		public static final String opcode6 = "6";
 		public static final String opcode7 = "7";
-		//8. �궗留앹옄
+		// 8. 占쎄텢筌띿빘�쁽
 		public static final String opcode8 = "8";
-		//9. �쑀�� �꽑�깮 �슂泥�
+		// 9. 占쎌�占쏙옙 占쎄퐨占쎄문 占쎌뒄筌ｏ옙
 		public static final String opcode9 = "9";
-		//10. �쑀�� �꽑�깮 醫낅즺
+		// 10. 占쎌�占쏙옙 占쎄퐨占쎄문 �넫�굝利�
 		public static final String opcode10 = "10";
-		//11-13. 寃뚯엫 寃곌낵 (�떆誘�/留덊뵾�븘/吏꾪뻾遺덇�)
+		// 11-13. 野껊슣�뿫 野껉퀗�궢 (占쎈뻻沃섓옙/筌띾뜇逾억옙釉�/筌욊쑵六얗겫�뜃占�)
 		public static final String opcode11 = "11";
 		public static final String opcode12 = "12";
 		public static final String opcode13 = "13";
-		//14-15. 李щ컲 �닾�몴 �슂泥�
+		// 14-15. 筌⊥됱뺘 占쎈떮占쎈ご 占쎌뒄筌ｏ옙
 		public static final String opcode14 = "14";
 		public static final String opcode15 = "15";
-		//16. 諛� �굹媛�湲�
+		// 16. 獄쏉옙 占쎄돌揶쏉옙疫뀐옙
 		public static final String opcode16 = "16";
-		//17. 諛� �뱾�뼱媛�湲� 
+		// 17. 獄쏉옙 占쎈굶占쎈선揶쏉옙疫뀐옙
 		public static final String opcode17 = "17";
-		//18. 諛� �뱾�뼱媛�湲� �꽦怨�
+		// 18. 獄쏉옙 占쎈굶占쎈선揶쏉옙疫뀐옙 占쎄쉐�⑨옙
 		public static final String opcode18 = "18";
-		//19. ? 
+		// 19. ?
 		public static final String opcode19 = "19";
-		//20. 諛� �쑀�� �젙蹂� 
+		// 20. 獄쏉옙 占쎌�占쏙옙 占쎌젟癰귨옙
 		public static final String opcode20 = "20";
-		//21. �닾�몴 �젣�씪 留롮씠 諛쏆� �쑀�� 
+		// 21. 占쎈떮占쎈ご 占쎌젫占쎌뵬 筌띾‘�뵠 獄쏆룇占� 占쎌�占쏙옙
 		public static final String opcode21 = "21";
-		//22-26. 寃뚯엫 �꽩 �쟾�떖 
+		// 22-26. 野껊슣�뿫 占쎄쉘 占쎌읈占쎈뼎
 		public static final String opcode22 = "22";
 		public static final String opcode23 = "23";
 		public static final String opcode24 = "24";
 		public static final String opcode25 = "25";
 		public static final String opcode26 = "26";
-			
+
 	}
-	
-	
+
 	public ClientControllerEventHandler(CMClientStub stub, ClientController client) {
-		m_clientStub  = stub;
-		m_client  = client;		
+		m_clientStub = stub;
+		m_client = client;
 		gameController = new GameController();
 		roomController = new RoomController();
 	}
-	
-	
+
 	@Override
 	public void processEvent(CMEvent cme) {
-		switch(cme.getType())
-		{
+		switch (cme.getType()) {
 		case CMInfo.CM_DUMMY_EVENT:
 			processDummyEvent(cme);
 			break;
@@ -88,167 +85,152 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 		default:
 			break;
 		}
-		
+
 	}
-	
-	
-	
-	private void processSessionEvent(CMEvent cme)
-	{
-		CMSessionEvent se = (CMSessionEvent)cme;
-		switch(se.getID())
-		{
-		// 濡쒓렇�씤 �솗�씤 
+
+	private void processSessionEvent(CMEvent cme) {
+		CMSessionEvent se = (CMSessionEvent) cme;
+		switch (se.getID()) {
+		// 嚥≪뮄�젃占쎌뵥 占쎌넇占쎌뵥
 		case CMSessionEvent.LOGIN_ACK:
 			if (se.isValidUser() == 0) {
 				System.out.println("This client fails authentication by the default server!\n");
-				m_client.terminateCM(); 
+				m_client.terminateCM();
 			}
-			
-			else if(se.isValidUser()== -1) {
+
+			else if (se.isValidUser() == -1) {
 				System.out.println("This client is already in the login-user list!\n");
 			}
-			
+
 			else {
 				System.out.println("This client successfully logs in to the default server.\n");
-				
+
 			}
 			break;
-			
+
 		case CMSessionEvent.RESPONSE_SESSION_INFO:
 			processRESPONSE_SESSION_INFO(se);
 			break;
-		
-		
-		case CMSessionEvent.REGISTER_USER_ACK:			
-			if( se.getReturnCode() == 1 )
-			{
+
+		case CMSessionEvent.REGISTER_USER_ACK:
+			if (se.getReturnCode() == 1) {
 				// user registration succeeded
-				System.out.println("User["+se.getUserName()+"] successfully registered at time["
-							+se.getCreationTime()+"].");
-			}
-			else
-			{
+				System.out.println("User[" + se.getUserName() + "] successfully registered at time["
+						+ se.getCreationTime() + "].");
+			} else {
 				// user registration failed
-				System.out.println("User["+se.getUserName()+"] failed to register!");
+				System.out.println("User[" + se.getUserName() + "] failed to register!");
 			}
 			break;
 		}
 	}
 
-	
-	
-	private void processRESPONSE_SESSION_INFO(CMSessionEvent se)
-	{
+	private void processRESPONSE_SESSION_INFO(CMSessionEvent se) {
 		Iterator<CMSessionInfo> iter = se.getSessionInfoList().iterator();
 
 		System.out.format("%-60s%n", "------------------------------------------------------------");
 		System.out.format("%-20s%-20s%-10s%-10s%n", "name", "address", "port", "user num");
 		System.out.format("%-60s%n", "------------------------------------------------------------");
 
-		while(iter.hasNext())
-		{
+		while (iter.hasNext()) {
 			CMSessionInfo tInfo = iter.next();
-			System.out.format("%-20s%-20s%-10d%-10d%n", tInfo.getSessionName(), tInfo.getAddress(), 
-					tInfo.getPort(), tInfo.getUserNum());
+			System.out.format("%-20s%-20s%-10d%-10d%n", tInfo.getSessionName(), tInfo.getAddress(), tInfo.getPort(),
+					tInfo.getUserNum());
 		}
 	}
 
-	
-
-	// Server濡� 遺��꽣 �삤�뒗 DummyEvent 泥섎━ 
-	private void processDummyEvent(CMEvent cme)
-	{
+	// Server嚥∽옙 �겫占쏙옙苑� 占쎌궎占쎈뮉 DummyEvent 筌ｌ꼶�봺
+	private void processDummyEvent(CMEvent cme) {
 		CMDummyEvent due = (CMDummyEvent) cme;
 		String msg = due.getDummyInfo();
-		System.out.println("total message for sender : " +msg);
-		String[] arrMsg = msg.split("|");
+		System.out.println("total message for sender : " + msg);
+		String[] arrMsg = msg.split("\\|");
 		String opcode = arrMsg[0];
 		String roomId = arrMsg[1];
 		String userName = arrMsg[2];
 		String args = arrMsg[3];
-		
-		switch(opcode) {
-		
+
+		switch (opcode) {
+
 		case DummyType.opcode0:
 			gameController.gameStart();
 			break;
-			
+
 		case DummyType.opcode1:
 			gameController.setUserRole(args);
 			break;
-			
+
 		case DummyType.opcode3:
-			
+			FrameController.getInstance().room_frame.sendMsg(userName, args);
 			break;
-			
+
 		case DummyType.opcode4:
-			
 			break;
-			
+
 		case DummyType.opcode5:
-			
 			break;
-			
+
 		case DummyType.opcode8:
 			gameController.broadcastDeadUser(args);
 			break;
-			
+
 		case DummyType.opcode9:
-			//�닾�몴 �떆�옉
+			// 占쎈떮占쎈ご 占쎈뻻占쎌삂
 			gameController.voteUser(args);
+			FrameController.getInstance().room_frame.sendMsg(userName, "choose");
 			break;
-			
+
 		case DummyType.opcode10:
-			//�쑀�� �꽑�깮醫낅즺�븯�뒗 �넻�떊 
-			break;	
-			
+			// 占쎌�占쏙옙 占쎄퐨占쎄문�넫�굝利븝옙釉�占쎈뮉 占쎈꽰占쎈뻿
+			break;
+
 		case DummyType.opcode11:
 			gameController.citizenWin();
-			break;	
-			
+			break;
+
 		case DummyType.opcode12:
 			gameController.mafiaWin();
-			break;	
-			
+			break;
+
 		case DummyType.opcode13:
-			//寃뚯엫 吏꾪뻾 遺덇� �삤瑜�
+			FrameController.getInstance().room_frame.dispose();
 			break;
-			
+
 		case DummyType.opcode14:
-			gameController.voteProsCons();
+			// gameController.voteProsCons();
+			FrameController.getInstance().room_frame.sendMsg(userName, "kill");
 			break;
-			
+
 		case DummyType.opcode15:
-			
-			//李щ컲 醫낅즺 �넻�떊
+
+			// 筌⊥됱뺘 �넫�굝利� 占쎈꽰占쎈뻿
 			break;
-			
+
 		case DummyType.opcode16:
 			roomController.exitRoom();
-			break;	
-			
+			break;
+
 		case DummyType.opcode18:
+			System.out.println(userName);
 			roomController.enterRoom(userName, args);
-			
-			break;	
-			
+			break;
+
 		case DummyType.opcode20:
-			
-			break;	
-			
+
+			break;
+
 		case DummyType.opcode21:
 			gameController.showMostSelectedUser(args);
-			break;	
-			
+			break;
+
 		case DummyType.opcode22:
 			gameController.setDay(0);
-			break;	
-			
+			break;
+
 		case DummyType.opcode23:
 			gameController.setDay(1);
-			break;	
-			
+			break;
+
 		case DummyType.opcode24:
 			gameController.mafiaTurn(args);
 			break;	

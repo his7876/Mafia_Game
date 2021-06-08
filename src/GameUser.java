@@ -40,17 +40,17 @@ import kr.ac.konkuk.ccslab.cm.stub.CMClientStub;
 import kr.ac.konkuk.ccslab.cm.util.CMUtil;
 
 
-// ¸¶ÇÇ¾Æ °ÔÀÓ¿¡ Âü¿©ÇÏ°í ÀÖ´Â À¯Àú Á¤º¸ ÀúÀå Å¬·¡½º
+// ë§ˆí”¼ì•„ ê²Œì„ì— ì°¸ì—¬í•˜ê³  ìˆëŠ” ìœ ì € ì •ë³´ ì €ì¥ í´ë˜ìŠ¤
 public class GameUser {
-	public int job; // 0 : ½Ã¹Î, 1 : ¸¶ÇÇ¾Æ, 2 : °æÂû, 3 : ÀÇ»ç
-	public boolean alive; // »ì¾ÆÀÖ´Â À¯ÀúÀÎ°¡?
-	public int voteCount; // ÀÌ À¯Àú¿¡ ÅõÇ¥¸¦ ¸î¸íÀÌ Çß´Â°¡?
-	public boolean isProtected; // ÀÌ À¯Àú°¡ º¸È£µÇ°í ÀÖ´Â°¡(ÀÇ»ç ´É·Â)
-	public boolean isVoted; // ÀÌ À¯Àú°¡ ÅõÇ¥±ÇÀ» Çà»çÇß´Â°¡?
-	public int uid; // ÀÌ À¯ÀúÀÇ ¹æ ³»¿¡¼­ÀÇ id´Â ¹«¾ùÀÎ°¡?
-	public String userName; // ÀÌ À¯ÀúÀÇ ÀÌ¸§(°íÀ¯½Äº°ÀÚ)
+	public int job; // 0 : ì‹œë¯¼, 1 : ë§ˆí”¼ì•„, 2 : ê²½ì°°, 3 : ì˜ì‚¬
+	public boolean alive; // ì‚´ì•„ìˆëŠ” ìœ ì €ì¸ê°€?
+	public int voteCount; // ì´ ìœ ì €ì— íˆ¬í‘œë¥¼ ëª‡ëª…ì´ í–ˆëŠ”ê°€?
+	public boolean isProtected; // ì´ ìœ ì €ê°€ ë³´í˜¸ë˜ê³  ìˆëŠ”ê°€(ì˜ì‚¬ ëŠ¥ë ¥)
+	public boolean isVoted; // ì´ ìœ ì €ê°€ íˆ¬í‘œê¶Œì„ í–‰ì‚¬í–ˆëŠ”ê°€?
+	public int uid; // ì´ ìœ ì €ì˜ ë°© ë‚´ì—ì„œì˜ idëŠ” ë¬´ì—‡ì¸ê°€?
+	public String userName; // ì´ ìœ ì €ì˜ ì´ë¦„(ê³ ìœ ì‹ë³„ì)
 	
-	// °¢ ÅÏ¸¶´Ù, ÀÌ À¯ÀúÀÇ »óÅÂ¸¦ ÃÊ±âÈ­ ½ÃÄÑÁØ´Ù.
+	// ê° í„´ë§ˆë‹¤, ì´ ìœ ì €ì˜ ìƒíƒœë¥¼ ì´ˆê¸°í™” ì‹œì¼œì¤€ë‹¤.
 	public void cleanState() {
 		this.isProtected = false;
 		this.voteCount = 0;

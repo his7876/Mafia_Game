@@ -6,10 +6,10 @@ import kr.ac.konkuk.ccslab.cm.stub.*;
 public class RoomController {
 	
 	//private ClientController u_Event = new ClientController();
-	private CMClientStub clientStub;
+//	private CMClientStub clientStub;
 
 	public RoomController() {
-		clientStub = new CMClientStub();
+//		clientStub = new CMClientStub();
 	}
 	
 	public String makeMsg(String args) {
@@ -17,32 +17,32 @@ public class RoomController {
 	}
 	
 	public void tryEnterRoom(){
-		String msg = makeMsg("");
+		String msg = makeMsg("try");
 		sendDummyEvent("17", msg);
 	}
-	public void enterRoom(String userId, String roomId) {
-		UserController.getInstance().enterRoom(roomId);
-		Room_Frame room_frame = new Room_Frame(userId);
+	public void enterRoom(String userId, String arg) {
+//		UserController.getInstance().enterRoom(arg);
+		FrameController.getInstance().init_room_frame(arg);
 	}
 	public void exitRoom() {
 		UserController.getInstance().exitRoom();
 	}
 	public void showUserList() {
-		getSessionMember();//session member 媛��졇���꽌 蹂댁뿬二쇨린
+		getSessionMember();//session member 揶쏉옙占쎌죬占쏙옙占쎄퐣 癰귣똻肉т틠�눊由�
 	}
 	
 	public void sendDummyEvent(String opcode, String msg) {
 		System.out.println("====== DummyEvent send to default server");
 		CMDummyEvent due = new CMDummyEvent();
-		due.setSender(clientStub.getCMInfo().getInteractionInfo().getMyself().getName());
+		due.setSender(CMClientStub.getInstance().getCMInfo().getInteractionInfo().getMyself().getName());
 		due.setDummyInfo(opcode+"|"+msg);
-		clientStub.send(due, "SERVER");
+		CMClientStub.getInstance().send(due, "SERVER");
 		System.out.println(due.getDummyInfo());
 	}
 	
 	public void getSessionMember() {
 		System.out.print("====== print group members\n");
-		CMMember groupMembers = clientStub.getGroupMembers();
+		CMMember groupMembers = CMClientStub.getInstance().getGroupMembers();
 		if(groupMembers == null || groupMembers.isEmpty())
 		{
 			System.err.println("No group member yet!");
