@@ -54,6 +54,7 @@ public class UserGameEventInfo {
 		String[] temp = info.split("\\|");
 		
 		if(temp.length < 4) {
+			ServerLogger.printLog("[Mafia Server] : 잘못된 Dummy Messege 입니다, 인자가 부족합니다, 현재 인자의 수 : " + temp.length);
 			return;
 		}
 		

@@ -77,10 +77,6 @@ public class GameLogicController implements Runnable{
 	private int gameExitStatus = -1; // 게임 종료 이유
 	private int roomid = 0;
 	
-	private static final int CHAT_VOTE_TIME = 60; // 초기 투표 시간
-	private static final int PROS_CONS_TIME = 20; // 찬반 투표 시간
-	private static final int NIGHT_JOB_TIME = 20; // 밤 시간에 각 직업이 선택하는 시간
-	
 	
 	private static final int CIVIL_WIN = 0; // 시민 승
 	private static final int MAFIA_WIN = 1; // 마피아 승
@@ -185,7 +181,17 @@ public class GameLogicController implements Runnable{
 		}
 		this.targetUser = who;
 	}
-	
+
+
+	// 시민 토론을 처리하는 함수
+	private void civilDiscussProcess() throws InterruptedException {
+		currentAction = new CivilSecectBehaviour();
+		connector.controllChatFunctionAll(true);
+		connector.broadcastDiscussionStart(true);
+		Thread.sleep(1000 * SystemValues.DISCUSS_TIME);
+		connector.controllChatFunctionAll(false);
+		connector.broadcastDiscussionStart(false);
+	}
 	
 	// 시민 투표를 처리하는 함수
 	private void civilVoteProcess() throws InterruptedException {
@@ -193,7 +199,7 @@ public class GameLogicController implements Runnable{
 		currentAction = new CivilSecectBehaviour();
 		civilVotePrepare();
 		enableInturrupt();
-		Thread.sleep(1000 * CHAT_VOTE_TIME);
+		Thread.sleep(1000 * SystemValues.CHAT_VOTE_TIME);
 		disableInturrupt();
 		civilVoteClose();
 		civilVoteResult();
@@ -226,7 +232,7 @@ public class GameLogicController implements Runnable{
 		}
 		civilProsConsPrepare();
 		enableInturrupt();
-		Thread.sleep(1000 * PROS_CONS_TIME);
+		Thread.sleep(1000 * SystemValues.PROS_CONS_TIME);
 		disableInturrupt();
 		civilProsConsClose();
 		civilProsConsResult();
@@ -285,7 +291,7 @@ public class GameLogicController implements Runnable{
 		connector.controllUserSelectFunction(users[mafia].userName, true);
 		currentAction = new MafiaSelectBehaviour();
 		enableInturrupt();
-		Thread.sleep(1000 * NIGHT_JOB_TIME);
+		Thread.sleep(1000 * SystemValues.NIGHT_JOB_TIME);
 		disableInturrupt();
 		connector.controllUserSelectFunction(users[mafia].userName, false);
 	}
@@ -296,7 +302,7 @@ public class GameLogicController implements Runnable{
 		connector.controllUserSelectFunction(users[doctor].userName, true);
 		currentAction = new DoctorSelectBehaviour();
 		enableInturrupt();
-		Thread.sleep(1000 * NIGHT_JOB_TIME);
+		Thread.sleep(1000 * SystemValues.NIGHT_JOB_TIME);
 		disableInturrupt();
 		connector.controllUserSelectFunction(users[doctor].userName, false);
 	}
@@ -307,7 +313,7 @@ public class GameLogicController implements Runnable{
 		connector.controllUserSelectFunction(users[police].userName, true);
 		currentAction = new PoliceSelectBehaviour();
 		enableInturrupt();
-		Thread.sleep(1000 * NIGHT_JOB_TIME);
+		Thread.sleep(1000 * SystemValues.NIGHT_JOB_TIME);
 		disableInturrupt();
 		connector.controllUserSelectFunction(users[police].userName, false);
 	}
@@ -358,6 +364,8 @@ public class GameLogicController implements Runnable{
 		assignJob();
 		try {
 			while (!exitCondition) {
+				ServerLogger.printLog("[방 :" + roomid + "] 시민 토론 시작함" );
+				civilDiscussProcess();
 				ServerLogger.printLog("[방 :" + roomid + "] 시민 투표 시작함" );
 				civilVoteProcess();
 				if(exitCondition) {continue;}
