@@ -63,6 +63,7 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 		public static final String opcode24 = "24";
 		public static final String opcode25 = "25";
 		public static final String opcode26 = "26";
+		public static final String opcode27 = "27";
 
 	}
 
@@ -149,25 +150,28 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 		String roomId = arrMsg[1];
 		String userName = arrMsg[2];
 		String args = arrMsg[3];
-
+		String[] job = {"시민", "마피아","경찰","의사"};
 		switch (opcode) {
 
 		case DummyType.opcode0:
 			gameController.gameStart();
+			FrameController.getInstance().room_frame.sendMsg(userName,  "게임을 시작합니다.");
 			break;
 
 		case DummyType.opcode1:
 			gameController.setUserRole(args);
+			FrameController.getInstance().room_frame.sendMsg(userName,  job[Integer.parseInt(args)]);
 			break;
 
 		case DummyType.opcode3:
-			FrameController.getInstance().room_frame.sendMsg(userName, args);
+			FrameController.getInstance().room_frame.sendMsg(userName,args);
 			break;
 
 		case DummyType.opcode4:
 			break;
 
 		case DummyType.opcode5:
+			
 			break;
 
 		case DummyType.opcode8:
@@ -177,6 +181,7 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 		case DummyType.opcode9:
 			// 占쎈떮占쎈ご 占쎈뻻占쎌삂
 			gameController.voteUser(args);
+			FrameController.getInstance().room_frame.sendMsg(userName,"투표를 시작합니다");
 			FrameController.getInstance().room_frame.sendMsg(userName, "choose");
 			break;
 
@@ -198,7 +203,8 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 
 		case DummyType.opcode14:
 			// gameController.voteProsCons();
-			FrameController.getInstance().room_frame.sendMsg(userName, "kill");
+			FrameController.getInstance().room_frame.sendMsg(userName,"찬반 투표를 시작합니다(20초)");
+			FrameController.getInstance().room_frame.sendMsg(args , "kill");
 			break;
 
 		case DummyType.opcode15:
@@ -224,21 +230,29 @@ public class ClientControllerEventHandler implements CMAppEventHandler {
 			break;
 
 		case DummyType.opcode22:
+			FrameController.getInstance().room_frame.sendMsg(userName,"낮이 되었습니다");
 			gameController.setDay(0);
 			break;
 
 		case DummyType.opcode23:
+			FrameController.getInstance().room_frame.sendMsg(userName,"밤이 되었습니다");
 			gameController.setDay(1);
 			break;
 
 		case DummyType.opcode24:
+			FrameController.getInstance().room_frame.sendMsg(userName,"마피아 턴 입니다");
 			gameController.mafiaTurn(args);
 			break;	
 		case DummyType.opcode25:
+			FrameController.getInstance().room_frame.sendMsg(userName,"경찰 턴 입니다");
 			gameController.policeTurn(args);
 			break;	
 		case DummyType.opcode26:
+			FrameController.getInstance().room_frame.sendMsg(userName,"의사 턴 입니다");
 			gameController.doctorTurn(args);
+			break;	
+		case DummyType.opcode27:
+			FrameController.getInstance().room_frame.sendMsg(userName,"토론을 시작합니다(60초)");
 			break;	
 
 		default:

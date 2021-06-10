@@ -117,6 +117,7 @@ public class Login_Frame extends JFrame{
 			     bLoginCheck = true;
 
 			     if(isLogin()){
+			    	 this.dispose();
 			    	   Main_Frame main_frame = new Main_Frame((String)Id_Textbox.getText(),controller);                   
    //             main.showMainFrame((String)Id_Textbox.getText());
 			    	   
@@ -163,5 +164,6 @@ public class Login_Frame extends JFrame{
         return bLoginCheck;
     }
 
+    
 
 }

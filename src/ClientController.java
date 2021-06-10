@@ -2,6 +2,9 @@
 import java.io.IOException;
 import java.util.Vector;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+
 import kr.ac.konkuk.ccslab.cm.entity.CMMember;
 import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
@@ -29,7 +32,7 @@ public class ClientController {
 			System.err.println("CM initialization error!");
 			return;
 		}else {
-			System.out.println("CM initialization success!");
+			System.out.println("CM initialization success!");	
 		}
 		
 	}
@@ -166,27 +169,36 @@ public class ClientController {
    *   Parameters : void
    *   Return values : void
    * */
-	public void getSessionMember() {
+	public String getSessionMember() {
 		System.out.print("====== print group members\n");
 		CMMember groupMembers = CMClientStub.getInstance().getGroupMembers();
 		if(groupMembers == null || groupMembers.isEmpty())
 		{
 			System.err.println("No group member yet!");
-			return;
+			return " ";
 		}
 		System.out.print(groupMembers+"\n");
 		
 //		System.out.print(groupMembers.toString()+"\n");
 		String member = groupMembers.toString();
 		
-		String[] mem = member.split(" ");
-		System.out.println("mem 0 : " + mem[0]);
-		System.out.println("mem 1 : " + mem[1]);
-    	String[] memberList = mem[1].split(" ");
+		return member;
+		
+//		String[] mem = member.split(" ");
+//		System.out.println("mem 0 : " + mem[0]);
+//		System.out.println("aaa" + CMClientStub.getInstance().getGroupMembers().getMemberNum());
+		//System.out.println("mem 1 : " + mem[1]);
+    	//String[] memberList = mem[1].split(" ");
+//		
+//		Friends_List = new JList(new DefaultListModel());
+//    	friend_model = (DefaultListModel)Friends_List.getModel();
+		
+//		FrameController.getInstance().main_frame.Friends_List = new JList(new DefaultListModel());
+//		FrameController.getInstance().main_frame.friend_model = (DefaultListModel)FrameController.getInstance().main_frame.Friends_List.getModel();
 
-    	for(int i = 0; i < memberList.length-1; i++) {
-    		FrameController.getInstance().main_frame.friend_model.addElement(memberList[i]);
-    	}
+//    	for(int i = 0; i < CMClientStub.getInstance().getGroupMembers().getMemberNum(); i++) {
+//    		FrameController.getInstance().main_frame.friend_model.addElement(mem[i]);
+//    	}
 
 	}
 	
@@ -207,14 +219,14 @@ public class ClientController {
   *   Return values : void
   * */
 	
-	public void sendDummyEvent(String opcode, String msg) {
-		System.out.println("====== DummyEvent send to default server");
-		CMDummyEvent due = new CMDummyEvent();
-		due.setSender(CMClientStub.getInstance().getCMInfo().getInteractionInfo().getMyself().getName());
-		due.setDummyInfo(opcode+"|"+msg);
-		CMClientStub.getInstance().send(due, "SERVER");
-		System.out.println(due.getDummyInfo());
-	}
+//	public void sendDummyEvent(String opcode, String msg) {
+//		System.out.println("====== DummyEvent send to default server");
+//		CMDummyEvent due = new CMDummyEvent();
+//		due.setSender(CMClientStub.getInstance().getCMInfo().getInteractionInfo().getMyself().getName());
+//		due.setDummyInfo(opcode+"|"+msg);
+//		CMClientStub.getInstance().send(due, "SERVER");
+//		System.out.println(due.getDummy5Info());
+//	}
 
 	
 

@@ -54,7 +54,7 @@ public class GameSession{
 	
 	public boolean tryAddUser(String user) {
 		if(canAddUser()) {
-			connector.tryAddUser(user);
+			connector.tryAddUser(user, 0);
 			ServerLogger.printLog("[방 :" + roomID + "] 유저 참여함 : " + ", 현재 인원수 : " + connector.currentUsers.size());
 			if(connector.currentUsers.size() == 5) {
 				gameLogic = new GameLogicController(connector,new GameSessionCallback() {					

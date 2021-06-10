@@ -47,11 +47,14 @@ public class GameCMConnector {
 			, "Request Stop User Select", "Civil Win", "Mafia Win", "Cannot Play Game", "Request Pros Cons"
 			, "Request Stop Pros Cons", "Request Exit Room", "Request Enter Room", "Cast Success Enter Room", "NULL"
 			, "Cast Users In The Room", "Cast Most Voted Player", "Cast Morning", "Cast Night"
-			, "Cast Mafia Turn", "Cast Police Turn", "Cast Doctor Turn"};
+			, "Cast Mafia Turn", "Cast Police Turn", "Cast Doctor Turn", "Discuss on", "Discuss off"};
 	
 	public GameCMConnector() {
 		currentUsers = new ArrayList<String>();
 		markers = new boolean[5];
+		for(int i = 0 ; i < 5; i ++) {
+			markers[i] = true;
+		}
 	}
 	
 	// 현재 온라인 상태인 유저의 수를 반환한다.
@@ -60,10 +63,10 @@ public class GameCMConnector {
 	}
 	
 	// 이 방에 유저를 추가한다
-	public boolean tryAddUser(String user) {
+	public boolean tryAddUser(String user, int uid) {
 		if(currentUsers.size() < 5) {
 			currentUsers.add(user);
-			castGameEnter(user);
+			castGameEnter(user, uid);
 			return true;
 		}
 		return false;
@@ -115,26 +118,26 @@ public class GameCMConnector {
 	}
 	
 	
-	public void castJobInfo(String user, int job) {
+	public void castJobInfo(String user, int job, int uid) {
 		UserGameEventInfo event = new UserGameEventInfo();
 		event.args = job + "";
 		event.opcode = 1;
 		event.roomID = -1;
 		event.userName = "Server";
-		sendEvent(event, user);
+		sendEvent(event, user, uid);
 	}
 	
 	
-	public void castGameEnter(String who) {
+	public void castGameEnter(String who, int uid) {
 		UserGameEventInfo event = new UserGameEventInfo();
 		event.args = who;
 		event.opcode = 18;
 		event.roomID = -1;
 		event.userName = "Server";
-		sendEvent(event, who);
+		sendEvent(event, who, uid);
 	}
 	
-	public void controllChatFunction(String user, boolean enable) {
+	public void controllChatFunction(String user, boolean enable, int uid) {
 		UserGameEventInfo event = new UserGameEventInfo();
 		event.args = user;
 		if(enable) {
@@ -144,7 +147,7 @@ public class GameCMConnector {
 		}
 		event.roomID = -1;
 		event.userName = "Server";
-		sendEvent(event, user);
+		sendEvent(event, user, uid);
 	}
 	
 	public void controllChatFunctionAll(boolean enable) {
@@ -160,9 +163,9 @@ public class GameCMConnector {
 		sendToAll(event);
 	}
 	
-	public void controllUserSelectFunction(String user, boolean enable) {
+	public void controllUserSelectFunction(String user, boolean enable, String arg, int uid) {
 		UserGameEventInfo event = new UserGameEventInfo();
-		event.args = user;
+		event.args = arg;
 		if(enable) {
 			event.opcode = 9;
 		}else {
@@ -170,12 +173,12 @@ public class GameCMConnector {
 		}
 		event.roomID = -1;
 		event.userName = "Server";
-		sendEvent(event, user);
+		sendEvent(event, user, uid);
 	}
 	
-	public void controllUserSelectFunctionAll(boolean enable) {
+	public void controllUserSelectFunctionAll(boolean enable, String arg) {
 		UserGameEventInfo event = new UserGameEventInfo();
-		event.args = "null";
+		event.args = arg;
 		if(enable) {
 			event.opcode = 9;
 		}else {
@@ -221,13 +224,18 @@ public class GameCMConnector {
 	
 	private void sendToAll(UserGameEventInfo event) {
 		for(int i = 0 ; i < currentUsers.size(); i ++) {
-			sendEvent(event, currentUsers.get(i));
+			if(markers[i]) {
+				sendEvent(event, currentUsers.get(i), i);
+			}
 		}
 	}
 	
-	private void sendEvent(UserGameEventInfo event, String to) {
-		ServerLogger.printLog("[서버 -> 클라이언트] 이벤트명 : " + OPCODE_INFO[event.opcode] + ", 전송 대상 : " + to + ", 인자 : " + event.args + ", 현재 방 : " + event.roomID);
-		CMGameGateway.getInstance().sendGameEvent(event, to);
+	private void sendEvent(UserGameEventInfo event, String to, int uid) {
+		if(markers[uid]) {
+			ServerLogger.printLog("[서버 -> 클라이언트] 이벤트명 : " + OPCODE_INFO[event.opcode] + ", 전송 대상 : " + to + ", 인자 : " + event.args + ", 현재 방 : " + event.roomID);
+			CMGameGateway.getInstance().sendGameEvent(event, to);
+		}
+
 	}
 
 	

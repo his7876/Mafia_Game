@@ -33,8 +33,7 @@ public class GameSessionHandler {
 		ServerLogger.printLog("[클라이언트 -> 서버] 보낸 클라이언트 : " + msg.userName + ", 보낸 이벤트 : " + GameCMConnector.OPCODE_INFO[msg.opcode] + ", 발생한 방 : " + room );
 		
 		switch(msg.opcode) {
-		case 2:
-			
+		case 2:		
 			if(room != -1) {
 				rooms[room].selectUser(msg.cme.getSender(), msg.args);
 				return true;

@@ -46,7 +46,7 @@ public class PoliceSelectBehaviour implements UserSelectedBehaviour{
 		// TODO Auto-generated method stub
 		if(users[who].job == 2 && !users[who].isVoted) {
 			users[who].isVoted = true;
-			cm.castJobInfo(users[who].userName, users[uid].job);
+			cm.castJobInfo(users[who].userName, users[uid].job, who);
 		}
 	}
 	

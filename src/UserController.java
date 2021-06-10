@@ -2,7 +2,7 @@ public class UserController{
 	
 	private String id;
 	private String password;
-	private String userRole;
+	private String userRole = "-1";
 	private String roomNum = "0";
 	private String isDead;
 	
@@ -84,11 +84,10 @@ public class UserController{
 
 	public void setUserRole(String userRole) {
 		/*
-		 * 0 : 寃뚯엫�뿉 �엯�옣 �븯吏� �븡�븯�쓣 �븣
-		 * 1 : citizen
-		 * 2 : mafia
-		 * 3 : police
-		 * 4 : doctor
+		 * 0 : 시민
+		 * 1 : 마피아
+		 * 2 : 경찰
+		 * 3 : 의사
 		 */
 		this.userRole = userRole;
 	}

@@ -38,6 +38,10 @@ class Choose_Dialog extends JDialog{
 		
 		user_btn = new JButton[user.size()];
 		HashMap<String, Boolean>hm = user;
+		for (Map.Entry ent : user.entrySet()) {
+			System.out.println(ent.getKey());
+		}
+		
 		Set set = hm.keySet();
 		Iterator it = set.iterator();
 		int i = 0;
@@ -55,7 +59,7 @@ class Choose_Dialog extends JDialog{
 			Timer timer = new Timer();
 			TimerTask task = new TimerTask() {
 				public void run() {
-					if(count <= 30){ //count값이 30보다 작거나 같을때까지 수행
+					if(count <= SystemValues.NIGHT_JOB_TIME){ //count값이 30보다 작거나 같을때까지 수행
 						System.out.println("[카운트다운 : "+count+"]");
 						count++; //실행횟수 증가 
 					}
@@ -108,8 +112,8 @@ public class Room_Frame extends JFrame{
 	
 	public JTextArea Chat_Area;
 	private JLabel Clock_Label;
-    private JTextField Msg_Textbox;
-    private JButton Msg_Send_Button;
+    public JTextField Msg_Textbox;
+    public JButton Msg_Send_Button;
     private JScrollPane scrollpane;
 	
     public String Username;
@@ -215,24 +219,26 @@ public class Room_Frame extends JFrame{
     	pnl.add(Msg_Send_Button);
     	
     }
-    public void victory() {
+    public void citizen_victory() {
     	//JOptionPane.showInternalMessageDialog(this, "승리");
-    	JOptionPane.showMessageDialog(null, "승리", "승리", JOptionPane.INFORMATION_MESSAGE);
+    	JOptionPane.showMessageDialog(null, "시민 승리", "시민 승리", JOptionPane.INFORMATION_MESSAGE);
     	this.dispose();
     }
-    public void defeat() {
+    public void mafia_victory() {
     	//JOptionPane.showInternalMessageDialog(this, "승리");
-    	JOptionPane.showMessageDialog(null, "패배", "패배", JOptionPane.INFORMATION_MESSAGE);
+    	JOptionPane.showMessageDialog(null, "마피아 승리", "마피아 승리", JOptionPane.INFORMATION_MESSAGE);
     	this.setVisible(false);
     }
+    
+//    public void disableTextbox()
     public void makekilldialog(String name) {
     	String[] answer = {"찬성", "반대"}; //찬성                                          0, 반대 1
     	int ans = JOptionPane.showOptionDialog(this, name + "죽일래?", "Kill", JOptionPane.YES_NO_OPTION , JOptionPane.PLAIN_MESSAGE ,  null, answer, answer[0]);
-    	if(ans == 1) {
-    		gameController.sendDummyEvent("6", gameController.makeMsg(""));
+    	if(ans == 0) {
+    		gameController.sendDummyEvent("6", gameController.makeMsg("-1"));
     	}
     	else {
-    		gameController.sendDummyEvent("7", gameController.makeMsg(""));
+    		gameController.sendDummyEvent("7", gameController.makeMsg("-1"));
     	}
     	
     	System.out.println("ans : "+ans);
@@ -244,7 +250,7 @@ public class Room_Frame extends JFrame{
     		dl.setVisible(true);
 		}
     	if(msg.equals("kill")) {
-			makekilldialog(Username);
+			makekilldialog(userName);
 		}
 		if(msg.equals("day")) {
 			Chat_Area.setText("");
@@ -254,10 +260,10 @@ public class Room_Frame extends JFrame{
 			Chat_Area.setText("");
 			daynightchange(false);
 		}
-		if(msg.equals("vic")) {
-			Chat_Area.setText("");
-			victory();
-		}
+//		if(msg.equals("vic")) {
+//			Chat_Area.setText("");
+//			victory();
+//		}
 		else {
 			Chat_Area.append(userName + ":"+msg+"\n");
 		}

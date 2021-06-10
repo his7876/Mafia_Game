@@ -89,7 +89,7 @@ public class GameController extends Thread{
 	
 	
 	public void setUserRole(String parm) {
-		UserController.getInstance().setUserRole(parm);
+		UserController.getInstance().setUserRole(parm);;
 	}
 	
 	public void voteUser(String parm) {
@@ -100,32 +100,33 @@ public class GameController extends Thread{
 		//ui
 		
 		for(int i = 0; i < aliveUserList.length; i++) {
+			System.out.println(aliveUserList[i]);
 			hm.put(aliveUserList[i], true);
 		}
 		FrameController.getInstance().room_frame.dl = new Choose_Dialog(FrameController.getInstance().room_frame, "Vote", hm);
 		
-		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
-			public void run() {
-				if(count <= 60){ //count값이 60보다 작거나 같을때까지 수행
-					System.out.println("[카운트다운 : "+count+"]");
-					count++; //실행횟수 증가 
-				}
-				else{
-					timer.cancel(); //타이머 종료
-					count = 1;
-					System.out.println("[카운트다운 : 종료]");
-				}
-			}
-		};
-		timer.schedule(task, 1000, 1000);//task 실행 , 1초마다 반복
+//		Timer timer = new Timer();
+//		TimerTask task = new TimerTask() {
+//			public void run() {
+//				if(count <= 30){ //count값이 60보다 작거나 같을때까지 수행
+//					System.out.println("[카운트다운 : "+count+"]");
+//					count++; //실행횟수 증가 
+//				}
+//				else{
+//					timer.cancel(); //타이머 종료
+//					count = 1;
+//					System.out.println("[카운트다운 : 종료]");
+//				}
+//			}
+//		};
+//		timer.schedule(task, 1000, 1000);//task 실행 , 1초마다 반복
 //	//방에서 인원이 꽉 찼다고 받아오기
 //	//-> 그때부터 카운트 (카운트를 서버에서 할지 클라이언트에서 할지)
 //	//게임시작 -> opcode 0
 		// String selectUser 占쎄퐨占쎄문 獄쏆룇占썲쳞占� 揶쏉옙占쎌죬占쏙옙占쎄퐣
-		String selectUser = " ";// 占쎄퐨占쎄문獄쏆룇占퐄d
-		String msg = makeMsg(selectUser);
-		sendDummyEvent("2", msg);
+//		String selectUser = " ";// 占쎄퐨占쎄문獄쏆룇占퐄d
+//		String msg = makeMsg(selectUser);
+//		sendDummyEvent("2", msg);
 	}
 	//筌≪럩�뱽 占쎌뱽占쎌뒭占쎈뮉 占쎈맙占쎈땾�몴占� 筌띾슢諭얏�⑨옙 占쎌뱽占쎈선筌욑옙 筌≪럩�뱽 占쎈선占쎈섯野껓옙 占쎈뼍占쎈툡..
 	public void showMostSelectedUser(String userid) {
@@ -148,11 +149,14 @@ public class GameController extends Thread{
 	}
 	*/
 	public void broadcastDeadUser(String userId) {
-		if(userId == UserController.getInstance().getId()) {
+		if(userId.equals(UserController.getInstance().getId())) {
 			UserController.getInstance().setIsDead("0");
+			FrameController.getInstance().room_frame.Msg_Textbox.setEnabled(false);
+			FrameController.getInstance().room_frame.Msg_Send_Button.setEnabled(false);
 			FrameController.getInstance().room_frame.sendMsg("Host", userId+" is Dead");
 		}
 		else {
+			System.out.println("aaaaaaaaaaaaaaaaaaaa");
 			FrameController.getInstance().room_frame.sendMsg("Host", userId+" is Dead");
 		}
 		//죽으면 채팅창에 show
@@ -160,7 +164,7 @@ public class GameController extends Thread{
 	
 	
 	public void mafiaTurn(String parm) {
-		if(UserController.getInstance().getUserRole() == "2") {
+		if(UserController.getInstance().getUserRole() == "1") {
 			HashMap<String, Boolean>hm = new HashMap<>();
 			
 			//MAFIA 죽일사람 리스트
@@ -192,7 +196,7 @@ public class GameController extends Thread{
 	
 	public void policeTurn(String parm) {
 		//경찰일때
-		if(UserController.getInstance().getUserRole() == "3") {
+		if(UserController.getInstance().getUserRole() == "2") {
 			HashMap<String, Boolean>hm = new HashMap<>();
 			
 			//경찰 볼사람 리스트
@@ -223,7 +227,7 @@ public class GameController extends Thread{
 	}
 	
 	public void doctorTurn(String parm) {
-		if(UserController.getInstance().getUserRole() == "4") {
+		if(UserController.getInstance().getUserRole() == "3") {
 			HashMap<String, Boolean>hm = new HashMap<>();
 			
 			//의사 살릴사람 리스트
@@ -254,23 +258,25 @@ public class GameController extends Thread{
 	}
 	
 	public void mafiaWin() {
-		if(UserController.getInstance().getUserRole() == "2") {
-			FrameController.getInstance().room_frame.victory();
-		}
-		else {
-			FrameController.getInstance().room_frame.defeat();
-		}
-		
+		FrameController.getInstance().room_frame.mafia_victory();
+//		if(UserController.getInstance().getUserRole() == "1") {
+//			FrameController.getInstance().room_frame.victory();
+//		}
+//		else {
+//			FrameController.getInstance().room_frame.defeat();
+//		}
+//		
 		UserController.getInstance().exitRoom();
 	}
 	
 	public void citizenWin() {
-		if(UserController.getInstance().getUserRole() != "2") {
-			FrameController.getInstance().room_frame.victory();
-		}
-		else {
-			FrameController.getInstance().room_frame.defeat();
-		}
+		FrameController.getInstance().room_frame.citizen_victory();
+//		if(UserController.getInstance().getUserRole() != "1") {
+//			FrameController.getInstance().room_frame.victory();
+//		}
+//		else {
+//			FrameController.getInstance().room_frame.defeat();
+//		}
 		UserController.getInstance().exitRoom();
 	}
 

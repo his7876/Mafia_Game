@@ -45,8 +45,33 @@ public class Main_Frame extends JFrame{
         add(pnl);
         setVisible(true);
         
-        Friends_List = new JList(new DefaultListModel());
-    	friend_model = (DefaultListModel)Friends_List.getModel();
+        Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+		        while(true) {
+		        	try {
+		        		Thread.sleep(3000);
+		            
+		            	String members = controller.getSessionMember();
+		            	String[] memberList = members.split(" ");
+		            	if(memberList.length != 0) {
+			            	friend_model.clear();
+			            	for(int i = 0; i < memberList.length; i++) {
+			            		friend_model.addElement(memberList[i]);
+			            	}	
+		            	}
+		            	
+		          
+		        	}catch(InterruptedException e) {
+		        		e.printStackTrace();
+		        	}
+		        }
+			}
+		});
+        t.start();
+
     }
     
     private void setDisplay(JPanel pnl) {
@@ -71,18 +96,9 @@ public class Main_Frame extends JFrame{
     	});
     
 //
-//    	Friends_List = new JList(new DefaultListModel());
-//    	friend_model = (DefaultListModel)Friends_List.getModel();
+    	Friends_List = new JList(new DefaultListModel());
+    	friend_model = (DefaultListModel)Friends_List.getModel();
     	
-    	controller.getSessionMember();
-////    	
-//    	String members = controller.getSessionMember();
-//    	String[] memberList = members.split(" ");
-//    	
-//    	for(int i = 0; i < memberList.length; i++) {
-//    		friend_model.addElement(memberList[i]);
-//    	}
-//    	
     	scrollpane2 = new JScrollPane(Friends_List);
     	scrollpane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	

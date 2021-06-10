@@ -70,6 +70,7 @@ public class GameLogicController implements Runnable{
 	private volatile int voteCount; // 이 변수는 캐쉬에 적재되면 안된다. 캐쉬 동기화 이슈를 피하기 위함이다.
 	private volatile boolean disabledInturrupt = false; // 동기화를 위해, 메모리에 적제한다. 동기화를 위한 state-variable이다.
 	private int targetUser = -1;
+	private int voteTarget = -1;
 	private int mafia, police, doctor;
 	private UserSelectedBehaviour currentAction; // 유저를 선택 했을때의 request 핸들러
 	private boolean exitCondition = false; // 게임 종료 조건이 달성되었는가?
@@ -118,8 +119,8 @@ public class GameLogicController implements Runnable{
 			
 			users[i].job = jobs[i];
 			ServerLogger.printLog("[방 :" + roomid + "] 유저 > " + users[i].userName +" < 에게 직업 : " + jobs[i] + "를 배정함" );
-			connector.castJobInfo(users[i].userName, users[i].job); // 각 유저에게 해당 유저의 직업을 방송
-			switch(i) {
+			connector.castJobInfo(users[i].userName, users[i].job, i); // 각 유저에게 해당 유저의 직업을 방송
+			switch(jobs[i]) {
 			case 1 :
 				mafia = i;
 				break;
@@ -141,7 +142,6 @@ public class GameLogicController implements Runnable{
 		for(int i = 0; i < users.length; i ++) {
 			users[i].cleanState();
 		}
-		targetUser = -1;
 	}
 	
 	// 동기화 함수, CM인터럽트를 무시한다.
@@ -158,13 +158,13 @@ public class GameLogicController implements Runnable{
 	// 시민 투표를 시작하는 함수
 	private void civilVotePrepare() {
 		connector.controllChatFunctionAll(true);
-		connector.controllUserSelectFunctionAll(true);
+		connector.controllUserSelectFunctionAll(true, getUserList(0));
 	}
 	
 	
 	// 시민 투표를 종료하는 함수
 	private void civilVoteClose() {
-		connector.controllUserSelectFunctionAll(false);
+		connector.controllUserSelectFunctionAll(false, getUserList(0));
 	}
 	
 	// 시민 투표 결과를 집계하는 함수
@@ -199,7 +199,7 @@ public class GameLogicController implements Runnable{
 		currentAction = new CivilSecectBehaviour();
 		civilVotePrepare();
 		enableInturrupt();
-		Thread.sleep(1000 * SystemValues.CHAT_VOTE_TIME);
+		Thread.sleep(1000 * SystemValues.NIGHT_JOB_TIME);
 		disableInturrupt();
 		civilVoteClose();
 		civilVoteResult();
@@ -221,6 +221,7 @@ public class GameLogicController implements Runnable{
 	// 찬반 투표 결과를 집계하는 함수
 	private void civilProsConsResult() {
 		if(voteCount > alive / 2) {
+			ServerLogger.printLog("[서버] : 찬반 투표 결과 정산");
 			killPlayer(targetUser);
 		}
 	}
@@ -230,9 +231,10 @@ public class GameLogicController implements Runnable{
 		if(targetUser == -1){
 			return;
 		}
+		initForNextTurn();
 		civilProsConsPrepare();
 		enableInturrupt();
-		Thread.sleep(1000 * SystemValues.PROS_CONS_TIME);
+		Thread.sleep(1000 * SystemValues.NIGHT_JOB_TIME);
 		disableInturrupt();
 		civilProsConsClose();
 		civilProsConsResult();
@@ -253,9 +255,9 @@ public class GameLogicController implements Runnable{
 	private void killPlayer(int id) {
 		if(!users[id].isProtected) {
 			users[id].alive = false;
-			connector.markUser(id, false);
-			connector.controllChatFunction(users[id].userName, false);
+			connector.controllChatFunction(users[id].userName, false, id);
 			connector.broadcastUserDie(users[id].userName, null);
+			connector.markUser(id, false);
 			ServerLogger.printLog("[방 :" + roomid + "] 플레이어 : " + users[id].userName + "  사망함");
 		}
 		if(id == mafia) {
@@ -280,6 +282,7 @@ public class GameLogicController implements Runnable{
 		civilVoteResult();
 		if(targetUser != -1) {
 			if(!users[targetUser].isProtected) {
+				ServerLogger.printLog("[방 :" + roomid + "] 마피아가 시민 죽임" );
 				killPlayer(targetUser);
 			}
 		}
@@ -288,38 +291,38 @@ public class GameLogicController implements Runnable{
 	private void doMafiaJob() throws InterruptedException{
 		ServerLogger.printLog("[방 :" + roomid + "] 마피아 액션 시작" );
 		connector.broadcastGameStage(2, getUserList(1));
-		connector.controllUserSelectFunction(users[mafia].userName, true);
+		connector.controllUserSelectFunction(users[mafia].userName, true, getUserList(0), mafia);
 		currentAction = new MafiaSelectBehaviour();
 		enableInturrupt();
 		Thread.sleep(1000 * SystemValues.NIGHT_JOB_TIME);
 		disableInturrupt();
-		connector.controllUserSelectFunction(users[mafia].userName, false);
+		connector.controllUserSelectFunction(users[mafia].userName, false, getUserList(0), mafia);
 	}
 	
 	private void doDoctorJob() throws InterruptedException{
 		ServerLogger.printLog("[방 :" + roomid + "] 의사 액션 시작" );
 		connector.broadcastGameStage(3, getUserList(1));
-		connector.controllUserSelectFunction(users[doctor].userName, true);
+		connector.controllUserSelectFunction(users[doctor].userName, true, getUserList(0), doctor);
 		currentAction = new DoctorSelectBehaviour();
 		enableInturrupt();
 		Thread.sleep(1000 * SystemValues.NIGHT_JOB_TIME);
 		disableInturrupt();
-		connector.controllUserSelectFunction(users[doctor].userName, false);
+		connector.controllUserSelectFunction(users[doctor].userName, false, getUserList(0), doctor);
 	}
 	
 	private void doPoliceJob() throws InterruptedException{
 		ServerLogger.printLog("[방 :" + roomid + "] 경찰 액션 시작" );
 		connector.broadcastGameStage(4, getUserList(1));
-		connector.controllUserSelectFunction(users[police].userName, true);
+		connector.controllUserSelectFunction(users[police].userName, true, getUserList(0), police);
 		currentAction = new PoliceSelectBehaviour();
 		enableInturrupt();
 		Thread.sleep(1000 * SystemValues.NIGHT_JOB_TIME);
 		disableInturrupt();
-		connector.controllUserSelectFunction(users[police].userName, false);
+		connector.controllUserSelectFunction(users[police].userName, false, getUserList(0), police);
 	}
 	
 	
-	private int tryFindUser(String user) {
+	public int tryFindUser(String user) {
 		for(int i = 0; i < users.length; i ++) {
 			if(users[i].userName.equals(user)) {
 				return i;
@@ -329,9 +332,11 @@ public class GameLogicController implements Runnable{
 	}
 	
 	public synchronized void adjustVoteCount(String user, boolean pros) {
+		ServerLogger.printLog("[방 :" + roomid + "] 플레이어 : "+ user + "가 결과에 " + pros );
 		if(!disabledInturrupt) {
 			int subject = tryFindUser(user);
 			if(subject == -1) {
+				System.out.println("[서버] : 잘못된 유저 이름");
 				return;
 			}
 			if(!users[subject].isVoted) {
@@ -348,7 +353,10 @@ public class GameLogicController implements Runnable{
 		int sender, vote;
 		if(!disabledInturrupt) {
 			sender =  tryFindUser(who);
-			vote = Integer.parseInt(target);
+			vote = tryFindUser(target);
+			if(vote == -1 || sender == -1) {
+				return;
+			}
 			if(sender == vote) {
 				return;
 			}
@@ -364,19 +372,27 @@ public class GameLogicController implements Runnable{
 		assignJob();
 		try {
 			while (!exitCondition) {
+				initForNextTurn();
+				
 				ServerLogger.printLog("[방 :" + roomid + "] 시민 토론 시작함" );
 				civilDiscussProcess();
+				
 				ServerLogger.printLog("[방 :" + roomid + "] 시민 투표 시작함" );
 				civilVoteProcess();
 				if(exitCondition) {continue;}
 				
+
 				ServerLogger.printLog("[방 :" + roomid + "] 결정된 유저에 대한 찬반 투표를 시작함" );
 				civilProsConsProcess();
 				if(exitCondition) {continue;}
 				
+				Thread.sleep(5000);
+				
+				initForNextTurn();
 				ServerLogger.printLog("[방 :" + roomid + "] 밤이 됨, 각 직업들의 기능을 시작" );
 				nightAction();
 				ServerLogger.printLog("[방 :" + roomid + "] 낮이 됨" );
+				connector.broadcastGameStage(0, getUserList(1));
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -391,11 +407,6 @@ public class GameLogicController implements Runnable{
 		String ret = "";
 		switch(type) {
 		case 0:
-			for(int i = 0; i < 5; i ++) {
-				ret += users[i].userName;
-				ret += "/";
-			}
-			return ret;
 		case 1:
 			for(int i = 0; i < 5; i ++) {
 				if(users[i].alive) {
